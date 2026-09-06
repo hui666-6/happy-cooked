@@ -15,6 +15,7 @@ public class OrderManager : MonoBehaviour
     private List<RecipeSO> orderRecipeSOList = new List<RecipeSO>();
     private float orderTimer = 0;
     private bool isStartOrder = false;
+    private bool waitForTutorialFinish = false;
     private int orderCount = 0;
     private int successDeliveryCount = 0;
     private void Start()
@@ -27,13 +28,28 @@ public class OrderManager : MonoBehaviour
         {
             recipesolist = LevelManager.Instance.RecipeList;
         }
+
+        TutorialGuideUI tutorialGuide = TutorialGuideUI.Instance;
+        if (tutorialGuide != null && tutorialGuide.BlocksOrderGeneration)
+        {
+            waitForTutorialFinish = true;
+            tutorialGuide.OnTutorialFinished += TutorialGuideUI_OnTutorialFinished;
+        }
     }
 
     private void GameManager_onchangstate(object sender, EventArgs e)
     {
-        if (GameManager.Instance.IsGamePlayingState())
+        if (GameManager.Instance.IsGamePlayingState() && !waitForTutorialFinish)
         { 
           startsqawnorder();
+        }
+    }
+
+    private void TutorialGuideUI_OnTutorialFinished(object sender, EventArgs e)
+    {
+        if (GameManager.Instance != null && GameManager.Instance.IsGamePlayingState())
+        {
+            startsqawnorder();
         }
     }
 
