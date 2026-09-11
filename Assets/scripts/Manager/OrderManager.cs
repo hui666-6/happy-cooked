@@ -18,6 +18,7 @@ public class OrderManager : MonoBehaviour
     private bool waitForTutorialFinish = false;
     private int orderCount = 0;
     private int successDeliveryCount = 0;
+    private int currentScore = 0;
     private void Start()
     {
         GameManager.Instance.onchangstate += GameManager_onchangstate;
@@ -107,6 +108,7 @@ public class OrderManager : MonoBehaviour
         orderRecipeSOList.Remove(correctrecipe);
         OnRecipeSuccessed?.Invoke(this, EventArgs.Empty);
             print("�ϲ˳ɹ�");
+            currentScore += 10;
             successDeliveryCount++;
         }
 
@@ -140,5 +142,9 @@ public class OrderManager : MonoBehaviour
     public int GetsuccessDeliverCount()
     { 
       return successDeliveryCount;
+    }
+    public int GetCurrentScore()
+    {
+        return currentScore;
     }
 }
