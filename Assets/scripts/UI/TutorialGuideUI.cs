@@ -53,9 +53,6 @@ public class TutorialGuideUI : MonoBehaviour
     private int currentIndex = 0;
     private bool started = false;
 
-    /// <summary>Fired when every tutorial step is done, so OrderManager can start spawning orders.</summary>
-    public event EventHandler OnTutorialFinished;
-
     /// <summary>True while this tutorial should block order spawning (started on playing state and has steps).</summary>
     public bool BlocksOrderGeneration => startOnGamePlaying && steps != null && steps.Count > 0;
     private bool eventTaskDone = false; // 记录“一次性动作类”步骤是否已触发（放下/切菜/交付）
@@ -245,7 +242,5 @@ public class TutorialGuideUI : MonoBehaviour
             if (titleText != null) titleText.text = finishedTitle;
             if (contentText != null) contentText.text = finishedContent;
         }
-
-        OnTutorialFinished?.Invoke(this, EventArgs.Empty);
     }
 }

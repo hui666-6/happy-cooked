@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnPaused;
     private bool isgamePause=false;
+    /// <summary>本局是否刷新了当前关卡的历史最高分（结算面板用）。</summary>
+    public bool LastRunIsNewRecord { get; private set; }
 
     private void Awake()
     {
@@ -113,8 +115,23 @@ public class GameManager : MonoBehaviour
     { 
      state =State.gameover;
      DisablePlayer();
+     RecordScore();
      onchangstate?.Invoke(this, EventArgs.Empty);
 
+    }
+
+    /// <summary>结算时把本局得分提交到本地最高分存档。</summary>
+    private void RecordScore()
+    {
+        int score = OrderManager.Instance != null ? OrderManager.Instance.GetCurrentScore() : 0;
+        int stars = LevelManager.Instance != null ? LevelManager.Instance.ComputeStars(score) : 0;
+        LastRunIsNewRecord = PlayerProgress.SubmitResult(PlayerProgress.CurrentLevelKey, score, stars);
+    }
+
+    /// <summary>当前关卡的历史最高分（结算面板用）。</summary>
+    public int GetLevelHighScore()
+    {
+        return PlayerProgress.GetCurrentLevelHighScore();
     }
     private  void DisablePlayer()
     { 

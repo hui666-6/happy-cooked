@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,12 +9,11 @@ public class OrderManager : MonoBehaviour
     public event EventHandler OnRecipeSuccessed;
     public event EventHandler OnRecipeFailed;
     [SerializeField] private recipelistSO recipesolist;
-    [SerializeField] private float orderRate = 2;
-    [SerializeField] private int orderMax = 5;
+    [SerializeField] private float orderRate = 10;
+    private int maxCount = 5;
     private List<RecipeSO> orderRecipeSOList = new List<RecipeSO>();
     private float orderTimer = 0;
     private bool isStartOrder = false;
-    private bool waitForTutorialFinish = false;
     private int orderCount = 0;
     private int successDeliveryCount = 0;
     private int currentScore = 0;
@@ -30,25 +28,11 @@ public class OrderManager : MonoBehaviour
             recipesolist = LevelManager.Instance.RecipeList;
         }
 
-        TutorialGuideUI tutorialGuide = TutorialGuideUI.Instance;
-        if (tutorialGuide != null && tutorialGuide.BlocksOrderGeneration)
-        {
-            waitForTutorialFinish = true;
-            tutorialGuide.OnTutorialFinished += TutorialGuideUI_OnTutorialFinished;
-        }
     }
 
     private void GameManager_onchangstate(object sender, EventArgs e)
     {
-        if (GameManager.Instance.IsGamePlayingState() && !waitForTutorialFinish)
-        { 
-          startsqawnorder();
-        }
-    }
-
-    private void TutorialGuideUI_OnTutorialFinished(object sender, EventArgs e)
-    {
-        if (GameManager.Instance != null && GameManager.Instance.IsGamePlayingState())
+        if (GameManager.Instance.IsGamePlayingState())
         {
             startsqawnorder();
         }
@@ -68,7 +52,7 @@ public class OrderManager : MonoBehaviour
     private void OrderUpdate()
     {
         orderTimer += Time.deltaTime;
-        if (orderTimer >=orderRate)
+        if (orderTimer >= orderRate)
         {
             orderTimer = 0;
             OrderNewRecipe();
@@ -79,7 +63,7 @@ public class OrderManager : MonoBehaviour
 
     private void OrderNewRecipe()
     {
-        if (orderCount >= orderMax) return;
+        if (orderCount >= maxCount) return;
         // 菜单池为空则不生成，避免空列表随机取值报错
         if (recipesolist == null || recipesolist.recipeSOList == null || recipesolist.recipeSOList.Count == 0) return;
         orderCount++;
@@ -93,8 +77,8 @@ public class OrderManager : MonoBehaviour
         foreach (RecipeSO recipe in orderRecipeSOList)
         {
             if (IsCorrect(recipe, platekitchenobject))
-            { 
-             correctrecipe = recipe;
+            {
+                correctrecipe = recipe;
                 break;
             }
         }
@@ -104,19 +88,20 @@ public class OrderManager : MonoBehaviour
             print("�ϲ�ʧ��");
         }
         else
-        { 
-        orderRecipeSOList.Remove(correctrecipe);
-        OnRecipeSuccessed?.Invoke(this, EventArgs.Empty);
+        {
+            orderRecipeSOList.Remove(correctrecipe);
+            OnRecipeSuccessed?.Invoke(this, EventArgs.Empty);
             print("�ϲ˳ɹ�");
             currentScore += 10;
             successDeliveryCount++;
+            orderCount = maxCount - 1;
         }
 
     }
-    private bool IsCorrect(RecipeSO recipe,platekitchenobject platekitchenobject)
-    { 
+    private bool IsCorrect(RecipeSO recipe, platekitchenobject platekitchenobject)
+    {
         List<KitchenObjectSO> list1 = recipe.kitchenObjectSOList;
-        List<KitchenObjectSO>list2 =platekitchenobject.GetkitchenObjectList();
+        List<KitchenObjectSO> list2 = platekitchenobject.GetkitchenObjectList();
         if (list1.Count != list2.Count) return false;
         List<KitchenObjectSO> remaining = new List<KitchenObjectSO>(list2);
         foreach (KitchenObjectSO kitchenObjectSO in list1)
@@ -127,7 +112,7 @@ public class OrderManager : MonoBehaviour
             }
         }
         return true;
-    
+
     }
     public List<RecipeSO> GetOrderList()
     {
@@ -135,13 +120,13 @@ public class OrderManager : MonoBehaviour
     }
 
     private void startsqawnorder()
-    { 
-      isStartOrder = true;
+    {
+        isStartOrder = true;
     }
 
     public int GetsuccessDeliverCount()
-    { 
-      return successDeliveryCount;
+    {
+        return successDeliveryCount;
     }
     public int GetCurrentScore()
     {
