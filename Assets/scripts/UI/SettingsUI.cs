@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems; 
+using UnityEngine.Events;
 using UnityEngine.UI;
+using System;
 
 public class SettingsUI : MonoBehaviour
 {   public static SettingsUI instance { get; private set; }
@@ -31,73 +34,66 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pause;
 
     [SerializeField] private GameObject rebinding;
-
+    private readonly Dictionary<Button, UnityAction> buttonListeners = new Dictionary<Button, UnityAction>();
+    public event EventHandler OnCloseButtonClicked;
 
     public void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning("场景中已存在 SettingsUI，销毁重复实例：" + name);
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
     }
     void Start()
     {
         hide();
         UpdateVisual();
-        musicbutton.onClick.AddListener(() => 
+        AddButtonListener(musicbutton, () => 
         {
             MusicManager.instance.OnChangeVolume();
             UpdateVisual();
         });
-        soundsbutton.onClick.AddListener(() =>
+        AddButtonListener(soundsbutton, () =>
         {
             SoundManager.instance.ChangeVolume();
             UpdateVisual();
         });
-        Exitbutton.onClick.AddListener(() =>
+        AddButtonListener(Exitbutton, () =>
         {
             hide();
+            OnCloseButtonClicked?.Invoke(this, EventArgs.Empty);
         });
-        forwardbutton.onClick.AddListener(() => 
-        {
-            Rebinding(gameinput.BindingType.forward);
-        });
-        backbutton.onClick.AddListener(() =>
-        {
-            Rebinding(gameinput.BindingType.back);
-        });
-        
-        leftbutton.onClick.AddListener(() =>
-        {
-            Rebinding(gameinput.BindingType.left);
-        });
-        rightbutton.onClick.AddListener(() =>
-        {
-            Rebinding(gameinput.BindingType.right);
-        });
-        getbutton.onClick.AddListener(() =>
-        {
-            Rebinding(gameinput.BindingType.get);
-        });
-        cutbutton.onClick.AddListener(() =>
-        {
-            Rebinding(gameinput.BindingType.cut);
-        });
-        pausebutton.onClick.AddListener(() =>
-        {
-            Rebinding(gameinput.BindingType.pause);
-        });
+        AddRebindingListener(forwardbutton, gameinput.BindingType.forward);
+        AddRebindingListener(backbutton, gameinput.BindingType.back);
+        AddRebindingListener(leftbutton, gameinput.BindingType.left);
+        AddRebindingListener(rightbutton, gameinput.BindingType.right);
+        AddRebindingListener(getbutton, gameinput.BindingType.get);
+        AddRebindingListener(cutbutton, gameinput.BindingType.cut);
+        AddRebindingListener(pausebutton, gameinput.BindingType.pause);
+     
     }
      
+    /// <summary>设置面板当前是否处于打开状态，供计时逻辑判断是否应暂停。</summary>
+    public bool IsOpen { get; private set; }
+
    public void show()
     { 
       uiparent.SetActive(true);
+      IsOpen = true;
     }
     private void hide()
     {
       uiparent.SetActive(false);
+      IsOpen = false;
+      
     }
     private void UpdateVisual()
     {
-        soundtext.text="��Ч��С:"+SoundManager.instance.GetVolume();
-        musictext.text="���ִ�С:"+MusicManager.instance.GetVolume();
+        soundtext.text="音效:"+SoundManager.instance.GetVolume();
+        musictext.text="音乐:"+MusicManager.instance.GetVolume();
         forward.text = gameinput.Instance.GetBindingDisplayString(gameinput.BindingType.forward);
         back.text = gameinput.Instance.GetBindingDisplayString(gameinput.BindingType.back);
         left.text = gameinput.Instance.GetBindingDisplayString(gameinput.BindingType.left);
@@ -115,5 +111,26 @@ public class SettingsUI : MonoBehaviour
             UpdateVisual();
         });
     }
-   
+
+    private void AddRebindingListener(Button button, gameinput.BindingType bindingType)
+    {
+        AddButtonListener(button, () => Rebinding(bindingType));
+    }
+
+    private void AddButtonListener(Button button, UnityAction listener)
+    {
+        button.onClick.AddListener(listener);
+        buttonListeners.Add(button, listener);
+    }
+
+    private void OnDestroy()
+    {
+        foreach (KeyValuePair<Button, UnityAction> buttonListener in buttonListeners)
+        {
+            buttonListener.Key.onClick.RemoveListener(buttonListener.Value);
+        }
+
+        buttonListeners.Clear();
+    }
+ 
 }

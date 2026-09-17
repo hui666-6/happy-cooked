@@ -22,6 +22,7 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField] private LevelSelectPanel panelPrefab;
     [Tooltip("面板挂在哪个父物体下；留空时自动用本物体所在的 Canvas")]
     [SerializeField] private RectTransform panelParent;
+    [SerializeField] private Button settingsButton;
 
     [Header("关卡")]
     [Tooltip("按顺序排列的关卡配置，第 0 个对应第一关")]
@@ -108,6 +109,7 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         if (leftButton != null) leftButton.onClick.AddListener(Previous);
         if (rightButton != null) rightButton.onClick.AddListener(Next);
+        if (settingsButton != null) settingsButton.onClick.AddListener(() => OnClickSettingsButton());
 
         index = loop ? Wrap(startIndex) : Mathf.Clamp(startIndex, 0, LevelCount - 1);
         content.anchoredPosition = new Vector2(-index * Step, contentY);
@@ -123,6 +125,9 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private void OnDisable()
     {
         scrollRoutine = null;
+        leftButton?.onClick.RemoveListener(Previous);
+        rightButton?.onClick.RemoveListener(Next);
+        settingsButton?.onClick.RemoveListener(() => OnClickSettingsButton());
     }
 
     private void Update()
@@ -322,5 +327,16 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         int count = LevelCount;
         return (levelIndex % count + count) % count;
+    }
+    private void OnClickSettingsButton()
+    {
+        if (SettingsUI.instance != null)
+        {
+            SettingsUI.instance.show();
+            if(panel!=null)
+            {
+                panel.Show(null);
+            }
+        }
     }
 }

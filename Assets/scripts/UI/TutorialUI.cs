@@ -12,6 +12,9 @@ public class TutorialUI : MonoBehaviour
     {
         GameManager.Instance.onchangstate += gamemanager_onchangstate;
         show();
+        // 场景刚加载时立即刷新一次按键文本，否则要等到 GameManager 首次触发状态变化事件
+        // 才会更新，中间这段时间会显示预制体里的旧占位文字。
+        UpdateVisual();
     }
     private void OnDisable()
     {

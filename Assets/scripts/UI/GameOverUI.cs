@@ -15,22 +15,35 @@ public class GameOverUI : MonoBehaviour
     [Tooltip("刷新最高分时显示的特效/标签，可留空")]
     [SerializeField] GameObject newRecordTag;
     [SerializeField] Image starImage;
+    [SerializeField] Button backButton;
+    [SerializeField] Button nextButton;
 
     private int CurrentLevelIndex => LevelManager.Instance.GetLevelDefinition().LevelKey != null ? LevelManager.Instance.GetLevelDefinition().LevelKey.GetHashCode() : 0;
     private int threeStar => LevelManager.Instance.GetLevelDefinition().star3Score;
     private int currentScore = 0;
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning("场景中已存在 GameOverUI，销毁重复实例：" + name);
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
-        
-
     }
     void Start()
     {
         hide();
         GameManager.Instance.onchangstate += GameManager_onchangstate;
+        backButton.onClick.AddListener(onClickBackButton);
+        nextButton.onClick.AddListener(onClickNextButton);
     }
-
+     void OnDestroy()
+    {
+        GameManager.Instance.onchangstate -= GameManager_onchangstate;
+        backButton.onClick.RemoveListener(onClickBackButton);
+        nextButton.onClick.RemoveListener(onClickNextButton);
+    }
     private void GameManager_onchangstate(object sender, System.EventArgs e)
     {
         if (GameManager.Instance.IsGameOverState())

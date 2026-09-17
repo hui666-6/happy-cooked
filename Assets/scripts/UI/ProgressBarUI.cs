@@ -6,6 +6,12 @@ using UnityEngine.UI;
 public class ProgressBarUI : MonoBehaviour
 {
     [SerializeField] private Image progressImage;
+  
+    public virtual void Awake()
+  {
+   
+  }
+
     public void show()
     { 
       gameObject.SetActive(true);
@@ -14,6 +20,7 @@ public class ProgressBarUI : MonoBehaviour
     { 
       gameObject.SetActive(false);
     }
+    
     public void UpdateProgress(float progerss)
     {
       show();

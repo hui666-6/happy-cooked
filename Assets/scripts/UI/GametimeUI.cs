@@ -10,6 +10,10 @@ public class GametimeUI : MonoBehaviour
     [SerializeField] private GameObject uiparent;
     [SerializeField] private Image countdown;
     [SerializeField] private TextMeshProUGUI time;
+    
+    public int currentTime=0;
+        
+        
     private void Start()
     {
         GameManager.Instance.onchangstate += GameManager_onchangstate;
@@ -40,4 +44,5 @@ public class GametimeUI : MonoBehaviour
     }
     private void show()
     { uiparent.SetActive(true); }
+
 }

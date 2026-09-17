@@ -10,6 +10,7 @@ public class WarningUI : MonoBehaviour
     private bool iswarning=false;
     private float warningrate = 0.2f;
     private float warningtime = 0;
+    
     private void Update()
     {    if (iswarning)
         {
@@ -37,7 +38,6 @@ public class WarningUI : MonoBehaviour
         iswarning=false;
         warningui.SetActive(false);
         progressbar.SetBool(IS_FLICKER, false);
-        progressbar.Rebind();
-        progressbar.Update(0f);
+
     }
 }

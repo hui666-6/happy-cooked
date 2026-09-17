@@ -28,6 +28,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning("场景中已存在 GameManager，销毁重复实例：" + name);
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
         gameplayingtimerTotal = gameplayingtimer;
        
@@ -73,10 +79,14 @@ public class GameManager : MonoBehaviour
                 }
                 break ;
             case State.gameplaying:
-                gameplayingtimer -= Time.deltaTime;
-                if (gameplayingtimer <= 0)
-                { 
-                  TrunTogameover();
+                // 设置面板打开时停止计时，避免面板显示期间倒计时仍在流逝
+                if (!IsSettingsOpen())
+                {
+                    gameplayingtimer -= Time.deltaTime;
+                    if (gameplayingtimer <= 0)
+                    {
+                        TrunTogameover();
+                    }
                 }
                 break ;
             case State.gameover:
@@ -156,6 +166,11 @@ public class GameManager : MonoBehaviour
     public bool IsGamePlayingState()
     {
         return state==State.gameplaying; 
+    }
+    /// <summary>设置面板是否打开（打开期间应暂停计时）。</summary>
+    private bool IsSettingsOpen()
+    {
+        return SettingsUI.instance != null && SettingsUI.instance.IsOpen;
     }
     public bool IsGameOverState()
     {

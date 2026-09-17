@@ -10,13 +10,25 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance { get; private set; }
     public void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning("场景中已存在 SoundManager，销毁重复实例：" + name);
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
         LoadVolume();
     }
     private void Start()
     {
-        OrderManager.Instance.OnRecipeSuccessed += Instance_OnRecipeSuccessed;
-        OrderManager.Instance.OnRecipeFailed += Instance_OnRecipeFailed;
+        // OrderManager 只存在于游戏关卡场景；在主菜单/选关等场景没有它，
+        // 做空判断后 SoundManager 就能安全地存在于这些场景（供设置界面调音量）。
+        if (OrderManager.Instance != null)
+        {
+            OrderManager.Instance.OnRecipeSuccessed += Instance_OnRecipeSuccessed;
+            OrderManager.Instance.OnRecipeFailed += Instance_OnRecipeFailed;
+        }
+        // 下面这些是静态事件，订阅本身不依赖任何实例，非关卡场景里也不会触发，安全。
         CuttingCounter.onchop += CuttingCounter_onchop;
         KitchenObjectHolder.ondrop += KitchenObjectHolder_ondrop;
         KitchenObjectHolder.onpickup += KitchenObjectHolder_onpickup;

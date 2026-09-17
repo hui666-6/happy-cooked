@@ -1119,6 +1119,8 @@ MonoBehaviour:
   highScoreText: {fileID: 6726281768607350193}
   newRecordTag: {fileID: 7650566478577367329}
   starImage: {fileID: 8782425331448092289}
+  backButton: {fileID: 477573207190348834}
+  nextButton: {fileID: 7661665912374644027}
 --- !u!1 &5613168326434213640
 GameObject:
   m_ObjectHideFlags: 0

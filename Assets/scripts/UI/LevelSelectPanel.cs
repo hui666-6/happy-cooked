@@ -29,6 +29,7 @@ public class LevelSelectPanel : MonoBehaviour
 
     [Header("按钮 / 动画")]
     [SerializeField] private Button startButton;
+    [SerializeField] private Button backButton;
     [SerializeField] private CanvasGroup canvasGroup;
     [Tooltip("面板滑入的时长（秒，不受 timeScale 影响）")]
     [SerializeField] private float showDuration = 0.25f;
@@ -58,13 +59,14 @@ public class LevelSelectPanel : MonoBehaviour
 
         if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
         if (startButton != null) startButton.onClick.AddListener(StartChallenge);
-
+        if (backButton != null) backButton.onClick.AddListener(OnBackButtonClicked);
         SetVisible(false, false);
     }
 
     private void OnDestroy()
     {
         if (startButton != null) startButton.onClick.RemoveListener(StartChallenge);
+        if (backButton != null) backButton.onClick.RemoveListener(OnBackButtonClicked);
     }
 
     private void Update()
@@ -161,7 +163,10 @@ public class LevelSelectPanel : MonoBehaviour
             image.enabled = image.sprite != null;
         }
     }
-
+    private void OnBackButtonClicked()
+    {
+        Loader.LoadScene("0-GameMenu");
+    }
     private void SetVisible(bool visible, bool animate)
     {
         animating = false;

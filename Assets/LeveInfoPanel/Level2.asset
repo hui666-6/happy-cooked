@@ -14,12 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelId: 02
   displayName: "\u7B2C\u4E8C\u5173"
-  preview: {fileID: 21300000, guid: aa1bacc24dde76e47b2ec0dd4e82385b, type: 3}
+  preview: {fileID: 21300000, guid: e6c9a6dd5863de54bac34b19ccabbc47, type: 3}
   sceneName: 3_GameScene
   nextLevel: {fileID: 0}
   ingredientSprites:
-  - {fileID: 21300000, guid: e1c23b5aded59d84da30738d3267a6c9, type: 3}
-  - {fileID: 21300000, guid: b08cf633dd7f4e84f88bd50e06323232, type: 3}
+  - {fileID: 21300000, guid: b76714982279e4b4aaaf807e322c3b07, type: 3}
   star1Score: 10
   star2Score: 20
   star3Score: 30

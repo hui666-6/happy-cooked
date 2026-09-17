@@ -19,6 +19,12 @@ public class player :KitchenObjectHolder
 
     public void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning("场景中已存在 player，销毁重复实例：" + name);
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
     }
     private void Start()

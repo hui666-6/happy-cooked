@@ -31,6 +31,12 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning("场景中已存在 LevelManager，销毁重复实例：" + name);
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
     }
 

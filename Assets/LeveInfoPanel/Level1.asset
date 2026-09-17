@@ -19,7 +19,6 @@ MonoBehaviour:
   nextLevel: {fileID: 11400000, guid: a0ff713ff97dedb408c567d11d366dca, type: 2}
   ingredientSprites:
   - {fileID: 21300000, guid: b08cf633dd7f4e84f88bd50e06323232, type: 3}
-  - {fileID: 21300000, guid: b08cf633dd7f4e84f88bd50e06323232, type: 3}
   star1Score: 10
   star2Score: 20
   star3Score: 40

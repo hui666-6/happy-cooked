@@ -7,13 +7,21 @@ using UnityEngine.InputSystem;
 public class gameinput : MonoBehaviour
 {
     private Gamecontrol gamecontrol;
-    public event EventHandler OnInteractAction;//ÊÂ¼şÎ¯ÍĞ
+    public event EventHandler OnInteractAction;//ï¿½Â¼ï¿½Î¯ï¿½ï¿½
     public event EventHandler OnOperateAction;
     public event EventHandler OnPause;
     private  const string GAMEINPUT_BINDINGS = "gameinput_binding";
     public static gameinput Instance { get; private set; }
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning("åœºæ™¯ä¸­å·²å­˜åœ¨ gameinputï¼Œé”€æ¯é‡å¤å®ä¾‹ï¼š" + name);
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         gamecontrol = new Gamecontrol();
         gamecontrol.player.Enable();
         if (PlayerPrefs.HasKey(GAMEINPUT_BINDINGS))
@@ -23,7 +31,6 @@ public class gameinput : MonoBehaviour
         gamecontrol.player.Interact.performed += Interact_performed;
         gamecontrol.player.Operate.performed += Operate_performed;
         gamecontrol.player.Pause.performed += Pause_performed;
-        Instance = this;
     }
     public enum BindingType
     { 
@@ -102,7 +109,7 @@ public class gameinput : MonoBehaviour
         {
             callback.Dispose();
             gamecontrol.player.Enable();
-            Oncomplete?.Invoke(); //OncompleteÊÇÎŞ²ÎÊıÎŞ·µ»ØÖµÀàĞÍµÄÎ¯ÍĞ
+            Oncomplete?.Invoke(); //Oncompleteï¿½ï¿½ï¿½Ş²ï¿½ï¿½ï¿½ï¿½Ş·ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Íµï¿½Î¯ï¿½ï¿½
             PlayerPrefs.SetString(GAMEINPUT_BINDINGS, gamecontrol.SaveBindingOverridesAsJson());
             PlayerPrefs.Save();
 

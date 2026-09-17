@@ -520,15 +520,15 @@ GameObject:
   - component: {fileID: 5012096751795926326}
   - component: {fileID: 1079451785746832545}
   - component: {fileID: 2341028384676955925}
-  - component: {fileID: 4951840316259551338}
   - component: {fileID: 4537350888165939719}
+  - component: {fileID: 6056420263623115372}
   m_Layer: 5
   m_Name: ProgressBarUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6179989577041451546
 RectTransform:
   m_ObjectHideFlags: 0
@@ -614,19 +614,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4951840316259551338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8712316943732264099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04ce2a220758b1544a122dbc42fc431b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressImage: {fileID: 9152048865256872268}
 --- !u!95 &4537350888165939719
 Animator:
   serializedVersion: 5
@@ -648,6 +635,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6056420263623115372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8712316943732264099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f939942845ba3dc4ea963be88ef16eae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressImage: {fileID: 9152048865256872268}
 --- !u!1 &9189376274317637130
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,7 +851,7 @@ MonoBehaviour:
   fryingrecipelist: {fileID: 11400000, guid: 5e8afef2e437d1b49bf84bbbc74ab768, type: 2}
   burningrecipelist: {fileID: 11400000, guid: b56fc4748638ef744b39f3caeec9eb85, type: 2}
   stoveCouonterVisual: {fileID: 6351308238759243660}
-  progressbarUI: {fileID: 4951840316259551338}
+  progressbarUI: {fileID: 6056420263623115372}
   sound: {fileID: 4935418371502738064}
 --- !u!114 &1185568763407457345
 MonoBehaviour:

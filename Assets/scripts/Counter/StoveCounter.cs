@@ -11,7 +11,7 @@ public class StoveCounter : BaseCounter
     [SerializeField] private FryingRecipeSO fryingrecipelist;
     [SerializeField] private FryingRecipeSO burningrecipelist;
     [SerializeField] private StoveCouonterVisual stoveCouonterVisual;
-    [SerializeField] private ProgressBarUI progressbarUI;
+    [SerializeField] private FryingProgressBarui progressbarUI;
     [SerializeField] private AudioSource sound;
     private WarningUI warningUI;
     private float warningtimenormalize = 0.5f;

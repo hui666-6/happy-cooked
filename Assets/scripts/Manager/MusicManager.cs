@@ -11,6 +11,12 @@ public class MusicManager : MonoBehaviour
     private const string MUSICMANAGER_VOLUME = "MusicManagerVolume";
     public void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning("场景中已存在 MusicManager，销毁重复实例：" + name);
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
         LoadVolume();
     }
