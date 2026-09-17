@@ -16,7 +16,8 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] GameObject newRecordTag;
     [SerializeField] Image starImage;
 
-    private int threeStar = 30;
+    private int CurrentLevelIndex => LevelManager.Instance.GetLevelDefinition().LevelKey != null ? LevelManager.Instance.GetLevelDefinition().LevelKey.GetHashCode() : 0;
+    private int threeStar => LevelManager.Instance.GetLevelDefinition().star3Score;
     private int currentScore = 0;
     private void Awake()
     {
@@ -66,12 +67,36 @@ public class GameOverUI : MonoBehaviour
     {
         uiparent.SetActive(false);
     }
-    private void onClickBackButton()
-    { 
-      
-    }
-    private void onClickNextButton()
+    public void onClickBackButton()
     {
-
+        Loader.LoadScene("LevelChooseScence");
     }
+    public void onClickNextButton()
+    {
+        if (LevelManager.Instance == null)
+        {
+            Debug.LogError("GameOverUI：找不到 LevelManager，无法加载下一关", this);
+            return;
+        }
+
+        // 从“当前关卡”的配置里读它自己的下一关，这样复用的结算面板每关都会跳到正确的场景
+        LevelDefinitionSO current = LevelManager.Instance.GetLevelDefinition();
+        if (current == null)
+        {
+            Debug.LogError("GameOverUI：当前关卡未配置 LevelDefinition，无法加载下一关", this);
+            return;
+        }
+
+        LevelDefinitionSO next = current.nextLevel;
+        if (next == null || string.IsNullOrWhiteSpace(next.sceneName))
+        {
+            Debug.LogWarning("GameOverUI：当前关卡没有配置下一关（可能已是最后一关）", this);
+            return;
+        }
+
+        Loader.LoadScene(next.sceneName);
+    }
+
+   
+  
 }

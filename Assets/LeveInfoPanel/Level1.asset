@@ -11,12 +11,15 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f8d5c31a7b94e6d8c0f3a5b7d9e1c24, type: 3}
   m_Name: Level1
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   levelId: 01
   displayName: "\u7B2C\u4E00\u5173"
   preview: {fileID: 21300000, guid: c2c8bc326fdb89f44988eb20c5770d61, type: 3}
   sceneName: 2-GameScence
-  recipeList: {fileID: 11400000, guid: 9a3a57bd959226b43994fef32a3aa09a, type: 2}
-  star1Score: 100
-  star2Score: 200
-  star3Score: 300
+  nextLevel: {fileID: 11400000, guid: a0ff713ff97dedb408c567d11d366dca, type: 2}
+  ingredientSprites:
+  - {fileID: 21300000, guid: b08cf633dd7f4e84f88bd50e06323232, type: 3}
+  - {fileID: 21300000, guid: b08cf633dd7f4e84f88bd50e06323232, type: 3}
+  star1Score: 10
+  star2Score: 20
+  star3Score: 40

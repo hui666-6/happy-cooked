@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,7 +13,6 @@ public class LevelSelectPanel : MonoBehaviour
     [Header("文本")]
     [SerializeField] private TextMeshProUGUI levelNameText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
-    [SerializeField] private TextMeshProUGUI recipeTitleText;
     [SerializeField] private TextMeshProUGUI startButtonText;
 
     [Header("星级")]
@@ -22,17 +20,12 @@ public class LevelSelectPanel : MonoBehaviour
     [SerializeField] private Image[] starImages;
     [Tooltip("星星图片；留空则保持预制体里已经填好的图")]
     [SerializeField] private Sprite starSprite;
-    [SerializeField] private Color earnedStarColor = new Color(1f, 0.84f, 0.3f, 1f);
-    [SerializeField] private Color lockedStarColor = new Color(1f, 1f, 1f, 0.2f);
+    [SerializeField] private Color earnedStarColor ;
+    [SerializeField] private Color lockedStarColor;
 
-    [Header("订单菜谱")]
-    [SerializeField] private RectTransform recipeContainer;
-    [Tooltip("面板里默认关闭的菜谱行模板")]
-    [SerializeField] private RectTransform recipeRowTemplate;
-    [SerializeField] private float recipeRowHeight = 46f;
-    [SerializeField] private float recipeRowGap = 6f;
-    [SerializeField] private float recipeIconSpacing = 40f;
-    [SerializeField] private int maxRecipeRows = 4;
+    [Header("食材图片")]
+    [Tooltip("当前关卡展示的食材图标，数量可按需要配置；会按顺序显示")]
+    [SerializeField] private Image[] ingredientImages;
 
     [Header("按钮 / 动画")]
     [SerializeField] private Button startButton;
@@ -43,11 +36,6 @@ public class LevelSelectPanel : MonoBehaviour
     [SerializeField] private float hiddenOffsetX = 160f;
     [Tooltip("点击开始挑战时的额外回调（例如播放音效）；加载场景由脚本负责")]
     public UnityEvent onStartChallenge;
-
-    private const string RowCloneName = "RecipeRow";
-    private const string RowNameChild = "Name";
-    private const string RowIconsChild = "Icons";
-    private const string IconTemplateChild = "IconTemplate";
 
     private RectTransform rect;
     private LevelDefinitionSO currentLevel;
@@ -70,7 +58,6 @@ public class LevelSelectPanel : MonoBehaviour
 
         if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
         if (startButton != null) startButton.onClick.AddListener(StartChallenge);
-        if (recipeRowTemplate != null) recipeRowTemplate.gameObject.SetActive(false);
 
         SetVisible(false, false);
     }
@@ -114,11 +101,10 @@ public class LevelSelectPanel : MonoBehaviour
         }
 
         UpdateStars(PlayerProgress.GetStars(levelKey));
+        UpdateIngredientImages(level);
 
-        if (recipeTitleText != null) recipeTitleText.text = "本关订单菜谱";
-        if (startButtonText != null) startButtonText.text = "开始挑战";
+        if (startButtonText != null) startButtonText.text = "开始游戏";
 
-        BuildRecipeRows(level);
         SetVisible(true, true);
     }
 
@@ -151,73 +137,28 @@ public class LevelSelectPanel : MonoBehaviour
         }
     }
 
-    private void BuildRecipeRows(LevelDefinitionSO level)
+    private void UpdateIngredientImages(LevelDefinitionSO level)
     {
-        if (recipeContainer == null || recipeRowTemplate == null) return;
+        if (ingredientImages == null) return;
 
-        ClearRecipeRows();
-
-        List<RecipeSO> recipes = level.recipeList != null ? level.recipeList.recipeSOList : null;
-        if (recipes == null) return;
-
-        int rowCount = Mathf.Min(recipes.Count, maxRecipeRows);
-        for (int i = 0; i < rowCount; i++)
+        for (int i = 0; i < ingredientImages.Length; i++)
         {
-            RecipeSO recipe = recipes[i];
-            if (recipe == null) continue;
+            Image image = ingredientImages[i];
+            if (image == null) continue;
 
-            RectTransform row = Instantiate(recipeRowTemplate);
-            row.name = RowCloneName;
-            row.SetParent(recipeContainer, false);
-            row.anchoredPosition = new Vector2(recipeRowTemplate.anchoredPosition.x,
-                recipeRowTemplate.anchoredPosition.y - i * (recipeRowHeight + recipeRowGap));
-            row.gameObject.SetActive(true);
-
-            Transform nameChild = row.Find(RowNameChild);
-            TextMeshProUGUI rowNameText = nameChild != null ? nameChild.GetComponent<TextMeshProUGUI>() : null;
-            if (rowNameText != null) rowNameText.text = recipe.recipeName;
-
-            BuildRecipeIcons(row, recipe);
-        }
-    }
-
-    private void BuildRecipeIcons(RectTransform row, RecipeSO recipe)
-    {
-        RectTransform iconsParent = row.Find(RowIconsChild) as RectTransform;
-        if (iconsParent == null) return;
-
-        for (int i = iconsParent.childCount - 1; i >= 0; i--)
-        {
-            Transform child = iconsParent.GetChild(i);
-            if (child.name == RowCloneName) Destroy(child.gameObject);
+            image.enabled = false;
+            image.sprite = null;
         }
 
-        RectTransform iconTemplate = iconsParent.Find(IconTemplateChild) as RectTransform;
-        if (iconTemplate == null || recipe.kitchenObjectSOList == null) return;
+        if (level == null || level.ingredientSprites == null) return;
 
-        for (int i = 0; i < recipe.kitchenObjectSOList.Count; i++)
+        for (int i = 0; i < ingredientImages.Length && i < level.ingredientSprites.Count; i++)
         {
-            KitchenObjectSO ingredient = recipe.kitchenObjectSOList[i];
-            if (ingredient == null) continue;
+            Image image = ingredientImages[i];
+            if (image == null) continue;
 
-            RectTransform icon = Instantiate(iconTemplate);
-            icon.name = RowCloneName;
-            icon.SetParent(iconsParent, false);
-            icon.anchoredPosition = new Vector2(iconTemplate.anchoredPosition.x + i * recipeIconSpacing,
-                iconTemplate.anchoredPosition.y);
-            icon.gameObject.SetActive(true);
-
-            Image iconImage = icon.GetComponent<Image>();
-            if (iconImage != null) iconImage.sprite = ingredient.Sprite;
-        }
-    }
-
-    private void ClearRecipeRows()
-    {
-        for (int i = recipeContainer.childCount - 1; i >= 0; i--)
-        {
-            Transform child = recipeContainer.GetChild(i);
-            if (child.name == RowCloneName) Destroy(child.gameObject);
+            image.sprite = level.ingredientSprites[i];
+            image.enabled = image.sprite != null;
         }
     }
 

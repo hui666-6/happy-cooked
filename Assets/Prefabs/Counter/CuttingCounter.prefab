@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 4804605683123826708}
   - component: {fileID: 3513311721721098647}
   - component: {fileID: 6649054013231604732}
-  - component: {fileID: 7961041311176592511}
   m_Layer: 5
   m_Name: ProgressBarUI
   m_TagString: Untagged
@@ -59,7 +58,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 661668987421700821}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.04803208, y: -0, z: -0, w: 0.9988458}
   m_LocalPosition: {x: 0, y: 0, z: -0.125}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
@@ -68,7 +67,7 @@ RectTransform:
   - {fileID: 6252895653872971114}
   - {fileID: 2653853266201775453}
   m_Father: {fileID: 3890252663136023655}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -5.506, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -0.051, y: 2.021}
@@ -150,19 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressImage: {fileID: 5081023997924318351}
---- !u!114 &7961041311176592511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 661668987421700821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd9302cf0ec619a41b3f2267caf08e8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 2
 --- !u!1 &1270582039102584833
 GameObject:
   m_ObjectHideFlags: 0

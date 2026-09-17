@@ -140,7 +140,6 @@ GameObject:
   - component: {fileID: 4756689832696150293}
   - component: {fileID: 3928035416951362794}
   - component: {fileID: 4004803947673216078}
-  - component: {fileID: 7135550965460967286}
   m_Layer: 5
   m_Name: Warning
   m_TagString: Untagged
@@ -156,7 +155,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 325791844602040326}
   m_LocalRotation: {x: -0.048331235, y: -0, z: -0, w: 0.9988314}
-  m_LocalPosition: {x: 0, y: 0, z: 0.335}
+  m_LocalPosition: {x: 0, y: 0, z: -0.57}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -165,7 +164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -5.541, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.011, y: 2.347}
+  m_AnchoredPosition: {x: 0.011, y: 2.4}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4756689832696150293
@@ -231,19 +230,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7135550965460967286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325791844602040326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd9302cf0ec619a41b3f2267caf08e8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 2
 --- !u!1 &411629483859207231
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +406,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.44
+  m_FillAmount: 0.676
   m_FillClockwise: 1
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
@@ -535,7 +521,6 @@ GameObject:
   - component: {fileID: 1079451785746832545}
   - component: {fileID: 2341028384676955925}
   - component: {fileID: 4951840316259551338}
-  - component: {fileID: 6028624078191751847}
   - component: {fileID: 4537350888165939719}
   m_Layer: 5
   m_Name: ProgressBarUI
@@ -543,7 +528,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6179989577041451546
 RectTransform:
   m_ObjectHideFlags: 0
@@ -552,7 +537,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8712316943732264099}
   m_LocalRotation: {x: -0.048331235, y: -0, z: -0, w: 0.9988314}
-  m_LocalPosition: {x: 0, y: 0, z: 0.335}
+  m_LocalPosition: {x: 0, y: 0, z: -0.55}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -563,7 +548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -5.541, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.011, y: 2.347}
+  m_AnchoredPosition: {x: 0.011, y: 2.26}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5012096751795926326
@@ -642,19 +627,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressImage: {fileID: 9152048865256872268}
---- !u!114 &6028624078191751847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8712316943732264099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd9302cf0ec619a41b3f2267caf08e8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 2
 --- !u!95 &4537350888165939719
 Animator:
   serializedVersion: 5

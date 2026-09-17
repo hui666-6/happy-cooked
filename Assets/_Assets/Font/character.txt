@@ -36,6 +36,8 @@
 历史最高得分：
 下一关
 返回主界面
+第一关
+
 1234567890
 qwertyuiopasdfghjklzxcvbnm_
 QWERTYUIOPASDFGHJKLZXCVBNM

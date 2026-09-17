@@ -123,6 +123,7 @@ public class StoveCounter : BaseCounter
         fryingTime = 0;
         this.fryingrecipe = fryingrecipe;
         State = StoveState.Frying;
+        warningUI.hide();
         stoveCouonterVisual.ShowStoveEffect();
         sound.Play();
 
@@ -131,7 +132,7 @@ public class StoveCounter : BaseCounter
     {
         if (fryingrecipe == null)
         {
-            Debug.LogWarning("ʳ�����޸�ʳ�ģ��޷��������");
+            Debug.LogWarning("这个食材不可以放在烤炉上");
             return;
         }
         stoveCouonterVisual.ShowStoveEffect();

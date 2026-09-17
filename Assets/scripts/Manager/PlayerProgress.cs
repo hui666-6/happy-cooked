@@ -84,7 +84,10 @@ public static class PlayerProgress
         return SubmitResult(levelKey, score, 0);
     }
 
-    /// <summary>提交一次结算：分数和星级都只保留历史最好成绩，返回是否刷新了最高分。</summary>
+    /// <summary>提交一次结算：分数和星级都只保留历史最好成绩，返回是否刷新了最高分。
+    /// 如果没有历史记录则创建新记录；如果分数和星级都没有超过历史最好成绩则不写入存档文件。
+    /// 
+    /// </summary>
     public static bool SubmitResult(string levelKey, int score, int stars)
     {
         if (string.IsNullOrEmpty(levelKey)) return false;
@@ -109,6 +112,7 @@ public static class PlayerProgress
         }
 
         Save();
+        Debug.Log("PlayerProgress：提交关卡 " + levelKey + " 的成绩，分数 " + score + "，星级 " + clampedStars + (newRecord ? "（刷新了最高分）" : ""));
         return newRecord;
     }
 

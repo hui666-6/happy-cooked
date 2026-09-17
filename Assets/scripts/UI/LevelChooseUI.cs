@@ -18,8 +18,6 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField] private RectTransform content;
     [SerializeField] private Button leftButton;
     [SerializeField] private Button rightButton;
-    [Tooltip("屏幕左侧显示当前关卡大图的 Image")]
-    [SerializeField] private Image levelPreview;
     [Tooltip("屏幕右侧的关卡信息面板预制体")]
     [SerializeField] private LevelSelectPanel panelPrefab;
     [Tooltip("面板挂在哪个父物体下；留空时自动用本物体所在的 Canvas")]
@@ -55,10 +53,6 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [Tooltip("键盘左右方向键 / A、D 切换关卡")]
     [SerializeField] private bool keyboard = true;
 
-    [Header("左侧大图")]
-    [Tooltip("切换关卡时左侧大图的淡入时长（秒）")]
-    [SerializeField] private float previewFadeDuration = 0.18f;
-
     [Header("事件")]
     [Tooltip("聚焦的关卡变化时触发，参数为关卡下标")]
     public UnityEvent<int> onLevelFocused;
@@ -71,7 +65,6 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private float dragSpeed;
     private Coroutine scrollRoutine;
     private LevelSelectPanel panel;
-    private float previewAlpha = 1f;
 
     /// <summary>关卡数量（至少为 1，方便先把空胶片框摆出来看效果）。</summary>
     public int LevelCount => levels != null && levels.Length > 0 ? levels.Length : 1;
@@ -145,12 +138,6 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             float wheel = Input.mouseScrollDelta.y;
             if (wheel > 0.01f) Previous();
             else if (wheel < -0.01f) Next();
-        }
-
-        if (levelPreview != null && previewAlpha < 1f)
-        {
-            previewAlpha = Mathf.Min(1f, previewAlpha + Time.unscaledDeltaTime / Mathf.Max(previewFadeDuration, 0.01f));
-            SetPreviewAlpha(previewAlpha);
         }
     }
 
@@ -248,18 +235,10 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    /// <summary>更新左侧大图和右侧信息面板。</summary>
+    /// <summary>更新右侧信息面板。</summary>
     private void UpdateDetails(int levelIndex, bool animate)
     {
         LevelDefinitionSO level = LevelAt(levelIndex);
-
-        if (levelPreview != null)
-        {
-            levelPreview.sprite = level != null ? level.preview : null;
-            levelPreview.enabled = levelPreview.sprite != null;
-            previewAlpha = animate ? 0f : 1f;
-            SetPreviewAlpha(previewAlpha);
-        }
 
         if (panel == null) panel = CreatePanel();
         if (panel != null) panel.Show(level);
@@ -279,14 +258,6 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         LevelSelectPanel newPanel = Instantiate(panelPrefab, parent, false);
         newPanel.name = panelPrefab.name;
         return newPanel;
-    }
-
-    private void SetPreviewAlpha(float alpha)
-    {
-        if (levelPreview == null) return;
-        Color color = levelPreview.color;
-        color.a = alpha;
-        levelPreview.color = color;
     }
 
     private LevelDefinitionSO LevelAt(int levelIndex)

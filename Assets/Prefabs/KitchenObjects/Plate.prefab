@@ -179,7 +179,6 @@ GameObject:
   - component: {fileID: 8246773866306252543}
   - component: {fileID: 7419260724027480506}
   - component: {fileID: 7430254623476726638}
-  - component: {fileID: 8623861840747435193}
   m_Layer: 5
   m_Name: kitchenobjectGridUI
   m_TagString: Untagged
@@ -194,17 +193,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8923422361677172657}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0.288}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7706813412926430464}
   m_Father: {fileID: 8174511933619376595}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1.335}
+  m_AnchoredPosition: {x: 0, y: 1.512}
   m_SizeDelta: {x: 150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3297485628747936187
@@ -307,19 +306,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconTempleteUI: {fileID: 8213077767649332378}
---- !u!114 &8623861840747435193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8923422361677172657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd9302cf0ec619a41b3f2267caf08e8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 2
 --- !u!1001 &270678527064717337
 PrefabInstance:
   m_ObjectHideFlags: 0

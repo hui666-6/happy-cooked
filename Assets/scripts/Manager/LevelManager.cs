@@ -4,6 +4,10 @@ using UnityEngine;
 /// 关卡管理器：每个关卡场景放一个，通过 levelType 声明当前关卡类型。
 /// 目前只有一个场景，作为新手教程关（Tutorial）。
 /// 后续新增关卡 = 新建场景 + 一个 LevelManager，设置不同的 levelType 和菜单列表即可。
+/// 获取当前关卡类型请使用 LevelManager.Instance.CurrentLevel。
+/// 获取当前关卡的唯一标识请使用 LevelManager.Instance.LevelKey。
+/// 获取当前关卡的菜单列表请使用 LevelManager.Instance.RecipeList。
+/// 选关界面用的 LevelDefinitionSO 也可以在这里配置，优先级高于 LevelSelectPanel 上的配置；如果没有配置，则选关界面会使用 LevelSelectPanel 上的配置。
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
@@ -22,6 +26,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private LevelDefinitionSO definition;
     [Tooltip("本关卡可生成的菜单列表；每个关卡可配置不同的菜单池")]
     [SerializeField] private recipelistSO recipeList;
+     /// <summary>只读属性，当读取这个属性时，直接返回recipeList</summary>
+    public recipelistSO RecipeList => recipeList;
 
     private void Awake()
     {
@@ -38,14 +44,14 @@ public class LevelManager : MonoBehaviour
             if (definition != null) return definition.LevelKey;
             if (!string.IsNullOrWhiteSpace(levelId)) return levelId;
             string sceneName = gameObject.scene.name;
-            return string.IsNullOrEmpty(sceneName) ? levelType.ToString() : sceneName + "_" + levelType;
+            return string.IsNullOrEmpty(sceneName) ? levelType.ToString() : sceneName + "_" + levelType.ToString();
         }
     }
 
     /// <summary>按分数换算星级（0~3）；没有配置 definition 时返回 0。</summary>
     public int ComputeStars(int score)
     {
-        return definition != null ? definition.ComputeStars(score) : 0;
+        return definition == null ? 0 : definition.ComputeStars(score);
     }
 
     public bool IsTutorialLevel()
@@ -53,6 +59,10 @@ public class LevelManager : MonoBehaviour
         return levelType == LevelType.Tutorial;
     }
 
-    /// <summary>本关卡的菜单列表（可能为空，调用方需自行兜底）。</summary>
-    public recipelistSO RecipeList => recipeList != null ? recipeList : (definition != null ? definition.recipeList : null);
+   public LevelDefinitionSO GetLevelDefinition()
+    {
+        return definition;
+    }
+  
+    
 }

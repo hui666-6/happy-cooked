@@ -37,5 +37,7 @@ public class WarningUI : MonoBehaviour
         iswarning=false;
         warningui.SetActive(false);
         progressbar.SetBool(IS_FLICKER, false);
+        progressbar.Rebind();
+        progressbar.Update(0f);
     }
 }

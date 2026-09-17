@@ -24,7 +24,7 @@ public static class Loader
        SceneManager.LoadScene((int)scene.Loading);
     
     }
-    /// <summary>按场景名加载：选关界面用它进入任意关卡场景。</summary>
+    /// <summary>场景加载中界面，用于显示加载进度。</summary>
     public static void LoadScene(string sceneName)
     {
         if (string.IsNullOrWhiteSpace(sceneName))
@@ -37,7 +37,9 @@ public static class Loader
         targetSceneName = sceneName;
         SceneManager.LoadScene((int)scene.Loading);
     }
-
+   /// <summary>
+   /// 当场景加载完毕后，在LoadBack会调用这个方法加载目标场景。
+   /// </summary>
     public static void LoadBack()
     {
         if (!string.IsNullOrEmpty(targetSceneName))

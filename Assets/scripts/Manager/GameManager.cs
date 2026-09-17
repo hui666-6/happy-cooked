@@ -125,6 +125,7 @@ public class GameManager : MonoBehaviour
     {
         int score = OrderManager.Instance != null ? OrderManager.Instance.GetCurrentScore() : 0;
         int stars = LevelManager.Instance != null ? LevelManager.Instance.ComputeStars(score) : 0;
+        Debug.Log("GameManager：本局得分 " + score + "，星级 " + stars);
         LastRunIsNewRecord = PlayerProgress.SubmitResult(PlayerProgress.CurrentLevelKey, score, stars);
     }
 
