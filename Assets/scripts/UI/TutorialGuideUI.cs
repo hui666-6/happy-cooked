@@ -71,7 +71,7 @@ public class TutorialGuideUI : MonoBehaviour
     private void Start()
     {
         // 订阅一次性动作事件（这些动作发生在某一帧，靠事件捕捉最准确）
-        KitchenObjectHolder.ondrop += OnDrop;
+       // KitchenObjectHolder.ondrop += OnDrop;
         CuttingCounter.onchop += OnChop;
         platekitchenobject.OnAnyIngredientAdded += OnIngredientAdded;
         if (OrderManager.Instance != null)
@@ -96,7 +96,7 @@ public class TutorialGuideUI : MonoBehaviour
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
-        KitchenObjectHolder.ondrop -= OnDrop;
+        //KitchenObjectHolder.ondrop -= OnDrop;
         CuttingCounter.onchop -= OnChop;
         platekitchenobject.OnAnyIngredientAdded -= OnIngredientAdded;
         if (OrderManager.Instance != null)
@@ -127,12 +127,12 @@ public class TutorialGuideUI : MonoBehaviour
         switch (step.task)
         {
             case TutorialTask.PickUpObject:
-                // 状态类条件：直接看玩家手上拿了什么，最稳，不受事件时机影响
-                if (player.Instance == null || !player.Instance.IsHavekitchenobject())
-                    return false;
-                if (step.requiredObject == null)
-                    return true; // 任意物体
-                return player.Instance.GetKitchenObjectSO() == step.requiredObject;
+                // // 状态类条件：直接看玩家手上拿了什么，最稳，不受事件时机影响
+                // if (player.Instance == null || !player.Instance.IsHavekitchenobject())
+                //     return false;
+                // if (step.requiredObject == null)
+                //     return true; // 任意物体
+                // return player.Instance.GetKitchenObjectSO() == step.requiredObject;
 
             case TutorialTask.PutDownObject:
             case TutorialTask.AddIngredientToPlate:

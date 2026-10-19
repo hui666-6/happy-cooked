@@ -30,8 +30,8 @@ public class SoundManager : MonoBehaviour
         }
         // 下面这些是静态事件，订阅本身不依赖任何实例，非关卡场景里也不会触发，安全。
         CuttingCounter.onchop += CuttingCounter_onchop;
-        KitchenObjectHolder.ondrop += KitchenObjectHolder_ondrop;
-        KitchenObjectHolder.onpickup += KitchenObjectHolder_onpickup;
+        //KitchenObjectHolder.ondrop += KitchenObjectHolder_ondrop;
+        //KitchenObjectHolder.onpickup += KitchenObjectHolder_onpickup;
         TrashCounter.onobjecttransh += TrashCounter_onobjecttransh;
     }
 

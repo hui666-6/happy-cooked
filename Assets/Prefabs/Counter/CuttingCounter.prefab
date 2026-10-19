@@ -149,7 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressImage: {fileID: 5081023997924318351}
-  animator: {fileID: 0}
 --- !u!1 &1270582039102584833
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,7 +315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7638846093988559132
 Transform:
   m_ObjectHideFlags: 0

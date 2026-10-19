@@ -332,11 +332,17 @@ public class LevelChooseUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (SettingsUI.instance != null)
         {
-            SettingsUI.instance.show();
-            if(panel!=null)
+            if (panel != null)
             {
                 panel.Show(null);
             }
+            SettingsUI.instance.show(() =>
+            {
+                if (panel != null)
+                {
+                    panel.Show(CurrentLevel);
+                }
+            });
         }
     }
 }

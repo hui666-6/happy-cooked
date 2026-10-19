@@ -1,113 +1,171 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using Unity.Netcode;
-
-//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class player :KitchenObjectHolder
+public class player : NetworkBehaviour, IKitchenObjectHolder
 {
     [SerializeField] private float movespeed = 7;
     [SerializeField] private float roatespeed = 10;
-    [SerializeField] private gameinput gameinput;
     [SerializeField] private LayerMask counterLayerMask;
-    public static player Instance { get; private set; }
+    [SerializeField] private Transform Holdpoint;
+
+   // public static player Instance { get; private set; }
+    public static event EventHandler onpickup;
+
+    private KitchenObject kitchenObject;
     private bool iswalking = false;
     private BaseCounter selectedcounter;
-    
 
     public void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogWarning("场景中已存在 player，销毁重复实例：" + name);
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+
+       // Instance = this;
     }
+
     private void Start()
     {
-        gameinput.OnInteractAction += Gameinput_OnInteractAction;
-        gameinput.OnOperateAction += Gameinput_OnOperateAction;
+        gameinput.Instance.OnInteractAction += Gameinput_OnInteractAction;
+        gameinput.Instance.OnOperateAction += Gameinput_OnOperateAction;
     }
 
-    private void Gameinput_OnOperateAction(object sender, System.EventArgs e)
+    private void Gameinput_OnOperateAction(object sender, EventArgs e)
     {
         selectedcounter?.InteractOperate(this);
-     
     }
 
-    private void Gameinput_OnInteractAction(object sender, System.EventArgs e)
+    private void Gameinput_OnInteractAction(object sender, EventArgs e)
     {
         selectedcounter?.Interact(this);
     }
-    void Update()
+
+    private void Update()
     {
         HandleInteraction();
     }
+
     private void FixedUpdate()
     {
         HandleMovement();
     }
-    public bool Iswalking
+
+    public bool Iswalking => iswalking;
+
+    public bool IsHavekitchenobject()
     {
-        get
+        return kitchenObject != null;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject;
+    }
+
+    public KitchenObjectSO GetKitchenObjectSO()
+    {
+        return kitchenObject != null ? kitchenObject.GetKitchenObjectSO() : null;
+    }
+
+    public void SetKitchenobject(KitchenObject newKitchenObject)
+    {
+        if (kitchenObject != newKitchenObject && newKitchenObject != null)
         {
-            return iswalking;
+            onpickup?.Invoke(this, EventArgs.Empty);
         }
+
+        kitchenObject = newKitchenObject;
+
+        if (kitchenObject != null)
+        {
+            kitchenObject.transform.localPosition = Vector3.zero;
+        }
+    }
+
+    public Transform GetHoldpoint()
+    {
+        return Holdpoint;
+    }
+
+    public void AddKitchenObject(KitchenObject newKitchenObject)
+    {
+        if (newKitchenObject == null)
+        {
+            return;
+        }
+
+        newKitchenObject.transform.SetParent(Holdpoint);
+        SetKitchenobject(newKitchenObject);
+    }
+
+    public void ClearKitchenObject()
+    {
+        kitchenObject = null;
+    }
+
+    public void Destorykitchenobject()
+    {
+        if (kitchenObject == null)
+        {
+            return;
+        }
+
+        Destroy(kitchenObject.gameObject);
+        ClearKitchenObject();
+    }
+
+    public void creatkitchenobject(GameObject kitchenobjectprefab)
+    {
+        if (kitchenobjectprefab == null)
+        {
+            return;
+        }
+
+        KitchenObject newKitchenObject = Instantiate(kitchenobjectprefab, GetHoldpoint()).GetComponent<KitchenObject>();
+        SetKitchenobject(newKitchenObject);
+    }
+
+    public static void ClearStaticData()
+    {
+        onpickup = null;
     }
 
     private void HandleMovement()
     {
-        Vector3 direction = gameinput.GetMovementDirectionNormalized();
-        transform.position += direction * Time.deltaTime * movespeed; //�����ƶ�
+        Vector3 direction = gameinput.Instance.GetMovementDirectionNormalized();
+        transform.position += direction * Time.deltaTime * movespeed;
         iswalking = direction != Vector3.zero;
-       
+
         if (direction != Vector3.zero && transform.forward != direction)
         {
             transform.forward = Vector3.Slerp(transform.forward, direction, Time.deltaTime * roatespeed);
         }
-
     }
-
 
     private void HandleInteraction()
     {
-
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hitinfo, 2f, counterLayerMask))
         {
-            if (hitinfo.transform.TryGetComponent<BaseCounter>(out BaseCounter counter))//�ж������Ƿ���һ����̨,���õ����������counter
+            if (hitinfo.transform.TryGetComponent<BaseCounter>(out BaseCounter counter))
             {
                 SetSelectedCounter(counter);
             }
             else
             {
-               SetSelectedCounter(null);
+                SetSelectedCounter(null);
             }
         }
         else
         {
             SetSelectedCounter(null);
-
-        }        
+        }
     }
 
-    public void SetSelectedCounter(BaseCounter counter) //��¼������ײ�Ĺ�̨
-
-    {        
+    public void SetSelectedCounter(BaseCounter counter)
+    {
         if (counter != selectedcounter)
         {
-            selectedcounter?.CancelSelect(); //�ɵ�ȡ��ѡ��
-            counter?.SelectCounter();//�µĸ���
-            this.selectedcounter = counter;//���¸�ֵ
-        }     
+            selectedcounter?.CancelSelect();
+            counter?.SelectCounter();
+            selectedcounter = counter;
+        }
     }
 }
-
-
-
-
-
-

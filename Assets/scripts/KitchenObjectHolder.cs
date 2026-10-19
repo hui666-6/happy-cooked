@@ -1,91 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class KitchenObjectHolder : MonoBehaviour
+/// <summary>
+/// 表示能够持有一个 KitchenObject 的对象，例如玩家或柜台。
+/// 该接口只定义持有物品的共同能力；网络同步由具体的 NetworkBehaviour 实现。
+/// </summary>
+public interface IKitchenObjectHolder
 {
-    [SerializeField] private Transform Holdpoint;//��縳ֵ
-    private KitchenObject kitchenObject;
-    public static event EventHandler ondrop;
-    public static event EventHandler onpickup;
-
-    public bool IsHavekitchenobject() 
-    {
-        return kitchenObject != null;
-     }
-    public KitchenObject GetKitchenObject()
-    {
-        return kitchenObject;
-
-    }
-    public KitchenObjectSO GetKitchenObjectSO()
-    { 
-      return kitchenObject.GetKitchenObjectSO();
-    }
-    public void SetKitchenobject(KitchenObject kitchenObject)
-    {
-        if (this.kitchenObject != kitchenObject && kitchenObject != null && this is BaseCounter)
-        {
-            ondrop?.Invoke(this, EventArgs.Empty);
-        }
-        else if (this.kitchenObject != kitchenObject && kitchenObject != null && this is player)
-        { 
-          onpickup?.Invoke(this, EventArgs.Empty);
-        }
-            this.kitchenObject = kitchenObject;
-            kitchenObject.transform.localPosition = Vector3.zero;
-
-    }
-    public Transform GetHoldpoint()
-    {
-        return Holdpoint;
-    
-    }
-    public void TransferKitchenObject(KitchenObjectHolder sourceHolder, KitchenObjectHolder targetHolder)
-    {
-        if (sourceHolder.GetKitchenObject() == null)
-        {
-            Debug.LogWarning("Դ��̨�ϲ�����ʳ�ģ�ת��ʧ�ܡ�");
-            return;
-        }
-        if (targetHolder.GetKitchenObject() != null)
-        {
-
-            Debug.LogWarning("Ŀ���̨�ϴ���ʳ�ģ�ת��ʧ�ܡ�");
-            return;
-        }
-
-        targetHolder.AddKitchenObject(sourceHolder.GetKitchenObject());
-        sourceHolder.ClearKitchenObject();
-    }
-
-    public void AddKitchenObject(KitchenObject kitchenObject)
-    {
-        kitchenObject.transform.SetParent(Holdpoint);
-        SetKitchenobject(kitchenObject);
-    }
-    public void ClearKitchenObject()
-    {
-        this.kitchenObject = null;
-    }
-    public void Destorykitchenobject()
-    {
-        Destroy(kitchenObject.gameObject);
-        ClearKitchenObject ();
-    }
-    public void creatkitchenobject(GameObject kitchenobjectprefab)
-    {
-        KitchenObject kitchenObject = GameObject.Instantiate(kitchenobjectprefab, GetHoldpoint()).GetComponent<KitchenObject>();
-        SetKitchenobject(kitchenObject);
-
-    }
-    public static void ClearStaticData()
-    { 
-        ondrop=null;
-        onpickup=null;
-    
-    }
+    bool IsHavekitchenobject();
+    KitchenObject GetKitchenObject();
+    KitchenObjectSO GetKitchenObjectSO();
+    void SetKitchenobject(KitchenObject kitchenObject);
+    Transform GetHoldpoint();
+    void AddKitchenObject(KitchenObject kitchenObject);
+    void ClearKitchenObject();
+    void Destorykitchenobject();
+    void creatkitchenobject(GameObject kitchenobjectprefab);
 }
-

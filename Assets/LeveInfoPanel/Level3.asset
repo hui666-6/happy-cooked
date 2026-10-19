@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8d5c31a7b94e6d8c0f3a5b7d9e1c24, type: 3}
+  m_Name: Level3
+  m_EditorClassIdentifier: 
+  levelId: 03
+  displayName: "\u7B2C\u4E09\u5173"
+  preview: {fileID: 21300000, guid: 885be1d1a1feb4a4fa6cedbee8a66a75, type: 3}
+  sceneName: 4-GameScence
+  nextLevel: {fileID: 0}
+  ingredientSprites:
+  - {fileID: 21300000, guid: b08cf633dd7f4e84f88bd50e06323232, type: 3}
+  - {fileID: 21300000, guid: b76714982279e4b4aaaf807e322c3b07, type: 3}
+  - {fileID: 21300000, guid: 2cff4978cdce15c47b4ffb39a3d096ac, type: 3}
+  - {fileID: 21300000, guid: 1c3716689e487a949a6595272d868b7b, type: 3}
+  star1Score: 40
+  star2Score: 50
+  star3Score: 60

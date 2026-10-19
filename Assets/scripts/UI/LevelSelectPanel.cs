@@ -47,6 +47,7 @@ public class LevelSelectPanel : MonoBehaviour
 
     /// <summary>当前显示的关卡。</summary>
     public LevelDefinitionSO CurrentLevel => currentLevel;
+    public static LevelSelectPanel Instance { get; private set; }
 
     private void Awake()
     {
@@ -61,8 +62,8 @@ public class LevelSelectPanel : MonoBehaviour
         if (startButton != null) startButton.onClick.AddListener(StartChallenge);
         if (backButton != null) backButton.onClick.AddListener(OnBackButtonClicked);
         SetVisible(false, false);
+        Instance = this;
     }
-
     private void OnDestroy()
     {
         if (startButton != null) startButton.onClick.RemoveListener(StartChallenge);

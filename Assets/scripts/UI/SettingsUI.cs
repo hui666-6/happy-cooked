@@ -35,7 +35,8 @@ public class SettingsUI : MonoBehaviour
 
     [SerializeField] private GameObject rebinding;
     private readonly Dictionary<Button, UnityAction> buttonListeners = new Dictionary<Button, UnityAction>();
-    public event EventHandler OnCloseButtonClicked;
+    private Action onCloseCallback;
+
 
     public void Awake()
     {
@@ -64,7 +65,6 @@ public class SettingsUI : MonoBehaviour
         AddButtonListener(Exitbutton, () =>
         {
             hide();
-            OnCloseButtonClicked?.Invoke(this, EventArgs.Empty);
         });
         AddRebindingListener(forwardbutton, gameinput.BindingType.forward);
         AddRebindingListener(backbutton, gameinput.BindingType.back);
@@ -79,16 +79,21 @@ public class SettingsUI : MonoBehaviour
     /// <summary>设置面板当前是否处于打开状态，供计时逻辑判断是否应暂停。</summary>
     public bool IsOpen { get; private set; }
 
-   public void show()
+   public void show(Action onClose = null)
     { 
+      onCloseCallback = onClose;
       uiparent.SetActive(true);
       IsOpen = true;
     }
     private void hide()
     {
+      bool wasOpen = IsOpen;
       uiparent.SetActive(false);
       IsOpen = false;
-      
+
+      Action callback = onCloseCallback;
+      onCloseCallback = null;
+      if (wasOpen) callback?.Invoke();
     }
     private void UpdateVisual()
     {

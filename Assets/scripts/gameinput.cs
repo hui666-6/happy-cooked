@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class gameinput : MonoBehaviour
 {
     private Gamecontrol gamecontrol;
-    public event EventHandler OnInteractAction;//�¼�ί��
+    public event EventHandler OnInteractAction;
     public event EventHandler OnOperateAction;
     public event EventHandler OnPause;
     private  const string GAMEINPUT_BINDINGS = "gameinput_binding";
