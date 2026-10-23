@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu]
-public class RecipeSO : ScriptableObject  //²Ëµ¥
+public class RecipeSO : ScriptableObject  //ï¿½Ëµï¿½
 {  
+    public int recipeID;
     public string recipeName;
     public List<KitchenObjectSO> kitchenObjectSOList;
 }

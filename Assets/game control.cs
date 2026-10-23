@@ -94,9 +94,9 @@ public partial class @Gamecontrol: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""move"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""fd206074-74a3-424a-9386-a5cb9bb4c739"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true

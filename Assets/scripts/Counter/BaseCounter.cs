@@ -113,13 +113,7 @@ public class BaseCounter : NetworkBehaviour, IKitchenObjectHolder
 
     public void creatkitchenobject(GameObject kitchenobjectprefab)
     {
-        if (kitchenobjectprefab == null)
-        {
-            return;
-        }
-
-        KitchenObject newKitchenObject = Instantiate(kitchenobjectprefab, GetHoldpoint()).GetComponent<KitchenObject>();
-        SetKitchenobject(newKitchenObject);
+      //  KitchenGameMultiPlayer.Instance.CreateKitchenObjectServerRpc(kitchenobjectprefab, this);
     }
 
     public static void ClearStaticData()
@@ -137,5 +131,10 @@ public class BaseCounter : NetworkBehaviour, IKitchenObjectHolder
     {
         selectedcounter.SetActive(false);
         OnDeselected?.Invoke(this, EventArgs.Empty);
+    }
+
+    public NetworkObject GetNetWorkObject()
+    {
+        return null;
     }
 }

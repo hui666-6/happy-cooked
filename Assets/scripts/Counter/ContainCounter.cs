@@ -11,9 +11,9 @@ public class ContainCounter : BaseCounter
     public override void Interact(player player)
     {
 
-        if (player.IsHavekitchenobject()) return;
+        if (!player.IsHavekitchenobject()) 
         {
-            creatkitchenobject(kitchen0bjectSO.prefab);
+            KitchenObject.CreateKitchenObject(kitchen0bjectSO, player);
             TransferKitchenObject(this, player);
             ContainerCounterVisual.playOpen();
 

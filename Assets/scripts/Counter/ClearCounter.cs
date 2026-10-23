@@ -7,15 +7,15 @@ public class ClearCounter : BaseCounter
     
     public override void Interact(player player)
     {
-        if (player.IsHavekitchenobject())//玩家手上有食材或盘子
+        if (player.IsHavekitchenobject())
         {
-            if (player.GetKitchenObject().TryGetComponent<platekitchenobject>(out platekitchenobject platekitchenobject))//有盘子
+            if (player.GetKitchenObject().TryGetComponent<platekitchenobject>(out platekitchenobject platekitchenobject))//锟斤拷锟斤拷锟斤拷
             {
                 if (IsHavekitchenobject() == false)
                 {
-                    TransferKitchenObject(player, this); //将盘子放在桌子上
+                    TransferKitchenObject(player, this); //锟斤拷锟斤拷锟接凤拷锟斤拷锟斤拷锟斤拷锟斤拷
                 }
-                else //柜台不是空
+                else //锟斤拷台锟斤拷锟角匡拷
                 {
                  bool Success = platekitchenobject.AddKitchenobjectSO(GetKitchenObjectSO());
                  if (Success)
@@ -25,9 +25,9 @@ public class ClearCounter : BaseCounter
                 }
 
             }
-            else //玩家手上是食材
+            else 
             {
-                if (IsHavekitchenobject() == false) //柜台为空
+                if (IsHavekitchenobject() == false) //锟斤拷台为锟斤拷
                 {
                     TransferKitchenObject(player, this);
                 }
@@ -48,7 +48,7 @@ public class ClearCounter : BaseCounter
         else 
         {
             
-            if (IsHavekitchenobject() == false) //柜台为空
+            if (IsHavekitchenobject() == false) //锟斤拷台为锟斤拷
             {
               
             }

@@ -10,4 +10,4 @@ public class ClearStaticData : MonoBehaviour
         CuttingCounter.clearStaticData();
         platekitchenobject.ClearStaticData();
     }
-}
+} 

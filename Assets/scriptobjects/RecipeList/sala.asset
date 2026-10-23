@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ffc6140ad22184b9b91060ddfbade1, type: 3}
   m_Name: sala
   m_EditorClassIdentifier: 
+  recipeID: 4
   recipeName: "\u6C99\u62C9"
   kitchenObjectSOList:
   - {fileID: 11400000, guid: d1f075e5c5973c14fbe9880f2e270305, type: 2}

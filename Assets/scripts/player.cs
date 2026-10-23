@@ -9,18 +9,18 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
     [SerializeField] private LayerMask counterLayerMask;
     [SerializeField] private Transform Holdpoint;
 
-   // public static player Instance { get; private set; }
-    public static event EventHandler onpickup;
+
+    public static player LocalInstance { get; private set; }
+
+    public static event EventHandler OnPickUp;
+    public static event EventHandler OnAnyPlayerSpawned;
+    public static event EventHandler OnAnyPickSomething;
 
     private KitchenObject kitchenObject;
     private bool iswalking = false;
     private BaseCounter selectedcounter;
 
-    public void Awake()
-    {
-
-       // Instance = this;
-    }
+   
 
     private void Start()
     {
@@ -28,6 +28,14 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
         gameinput.Instance.OnOperateAction += Gameinput_OnOperateAction;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            LocalInstance = this;
+        }
+        OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+    }
     private void Gameinput_OnOperateAction(object sender, EventArgs e)
     {
         selectedcounter?.InteractOperate(this);
@@ -40,11 +48,11 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
 
     private void Update()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
         HandleInteraction();
-    }
-
-    private void FixedUpdate()
-    {
         HandleMovement();
     }
 
@@ -69,7 +77,8 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
     {
         if (kitchenObject != newKitchenObject && newKitchenObject != null)
         {
-            onpickup?.Invoke(this, EventArgs.Empty);
+            OnPickUp?.Invoke(this, EventArgs.Empty);
+            OnAnyPickSomething?.Invoke(this, EventArgs.Empty);
         }
 
         kitchenObject = newKitchenObject;
@@ -112,25 +121,23 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
         ClearKitchenObject();
     }
 
-    public void creatkitchenobject(GameObject kitchenobjectprefab)
+    public  void creatkitchenobject(GameObject kitchenobjectprefab)
     {
-        if (kitchenobjectprefab == null)
-        {
-            return;
-        }
-
-        KitchenObject newKitchenObject = Instantiate(kitchenobjectprefab, GetHoldpoint()).GetComponent<KitchenObject>();
-        SetKitchenobject(newKitchenObject);
+    //   KitchenGameMultiPlayer kitchenGameMultiPlayer = KitchenGameMultiPlayer.Instance;
+    //   kitchenGameMultiPlayer.CreateKitchenObjectServerRpc(kitchenobjectprefab); 
     }
 
     public static void ClearStaticData()
-    {
-        onpickup = null;
+    { 
+        OnPickUp = null;
+        OnAnyPlayerSpawned = null;
+        OnAnyPickSomething = null;
     }
 
     private void HandleMovement()
     {
         Vector3 direction = gameinput.Instance.GetMovementDirectionNormalized();
+
         transform.position += direction * Time.deltaTime * movespeed;
         iswalking = direction != Vector3.zero;
 
@@ -167,5 +174,10 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
             counter?.SelectCounter();
             selectedcounter = counter;
         }
+    }
+
+    public NetworkObject GetNetWorkObject()
+    {
+        return NetworkObject;
     }
 }

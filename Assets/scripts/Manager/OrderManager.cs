@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class OrderManager : MonoBehaviour
+public class OrderManager :NetworkBehaviour
 {
     public static OrderManager Instance { get; private set; }
     public event EventHandler OnRecipeSpawned;
@@ -40,6 +41,7 @@ public class OrderManager : MonoBehaviour
 
     private void Update()
     {
+        if (!IsServer) return; // 只在服务器端处理订单生成逻辑，客户端通过事件同步
         if (isStartOrder)
         {
             OrderUpdate();
@@ -74,8 +76,15 @@ public class OrderManager : MonoBehaviour
         if (recipesolist == null || recipesolist.recipeSOList == null || recipesolist.recipeSOList.Count == 0) return;
         orderCount++;
         int index = UnityEngine.Random.Range(0, recipesolist.recipeSOList.Count);
+        OrderNewRecipeClientRpc(index);
+    }
+    //客户端接受服务器算出的下标，客户端添加、展示菜单
+    [ClientRpc]
+    private void OrderNewRecipeClientRpc(int index)
+    {
         orderRecipeSOList.Add(recipesolist.recipeSOList[index]);
         OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
+    
     }
     public void DeliveryRecipe(platekitchenobject platekitchenobject)
     {
@@ -90,20 +99,43 @@ public class OrderManager : MonoBehaviour
         }
         if (correctrecipe == null)
         {
-            OnRecipeFailed?.Invoke(this, EventArgs.Empty);
-            print("�ϲ�ʧ��");
+            DeliveryRecipeUnseccessedServerRpc();
         }
         else
         {
-            orderRecipeSOList.Remove(correctrecipe);
-            OnRecipeSuccessed?.Invoke(this, EventArgs.Empty);
-            print("�ϲ˳ɹ�");
-            currentScore += 10;
-            successDeliveryCount++;
-            orderCount = maxCount - 1;
+            DeliveryRecipeServerRpc(correctrecipe.recipeID);   
         }
 
     }
+    [ServerRpc(RequireOwnership = false)]
+    private void DeliveryRecipeServerRpc(int correctrecipeIndex)
+    {
+       DeliveryRecipeClientRpc(correctrecipeIndex);
+    }
+    [ClientRpc]
+    private void DeliveryRecipeClientRpc(int correctrecipeIndex)
+    {
+            orderRecipeSOList.Remove(correctrecipeIndex >= 0 && correctrecipeIndex < orderRecipeSOList.Count ? orderRecipeSOList[correctrecipeIndex] : null);
+            OnRecipeSuccessed?.Invoke(this, EventArgs.Empty);
+            print("成功");
+            currentScore += 10;
+            successDeliveryCount++;    
+        
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DeliveryRecipeUnseccessedServerRpc()
+    {
+        DeliveryRecipeUnseccessedClientRpc();
+    }
+    [ClientRpc]
+    private void DeliveryRecipeUnseccessedClientRpc()
+    {
+        OnRecipeFailed?.Invoke(this, EventArgs.Empty);
+            print("上菜失败");
+
+    }
+
     private bool IsCorrect(RecipeSO recipe, platekitchenobject platekitchenobject)
     {
         List<KitchenObjectSO> list1 = recipe.kitchenObjectSOList;

@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
                 // 设置面板打开时停止计时，避免面板显示期间倒计时仍在流逝
                 if (!IsSettingsOpen())
                 {
-                    gameplayingtimer -= Time.deltaTime;
+                   // gameplayingtimer -= Time.deltaTime;
                     if (gameplayingtimer <= 0)
                     {
                         TrunTogameover();
@@ -146,12 +146,12 @@ public class GameManager : MonoBehaviour
     }
     private  void DisablePlayer()
     { 
-        player.enabled = false;
+       // player.enabled = false;
       
     }
     private void EnablePlayer()
     {
-        player.enabled = true;
+      //  player.enabled = true;
         
     }
     public bool IsCountDownToStart()

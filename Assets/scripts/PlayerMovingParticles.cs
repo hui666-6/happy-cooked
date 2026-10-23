@@ -6,7 +6,7 @@ public class PlayerMovingParticles : MonoBehaviour
 {
     private void FixedUpdate()
     {
-        //transform.position=player.Instance.transform.position;
+       // transform.position=player.Instance.transform.position;
     }
 
 }

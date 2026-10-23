@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity.Netcode;
 public class SoundManager : MonoBehaviour
 {
     [SerializeField] private SoundsSO audiocliprefsSO;
@@ -31,10 +31,10 @@ public class SoundManager : MonoBehaviour
         // 下面这些是静态事件，订阅本身不依赖任何实例，非关卡场景里也不会触发，安全。
         CuttingCounter.onchop += CuttingCounter_onchop;
         //KitchenObjectHolder.ondrop += KitchenObjectHolder_ondrop;
-        //KitchenObjectHolder.onpickup += KitchenObjectHolder_onpickup;
+        player.OnAnyPickSomething += KitchenObjectHolder_onpickup;
         TrashCounter.onobjecttransh += TrashCounter_onobjecttransh;
     }
-
+ 
     private void TrashCounter_onobjecttransh(object sender, System.EventArgs e)
     {
         playSound(audiocliprefsSO.trash);
