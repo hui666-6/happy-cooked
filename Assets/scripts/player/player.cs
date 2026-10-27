@@ -101,7 +101,9 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
             return;
         }
 
-        newKitchenObject.transform.SetParent(Holdpoint);
+        // 食材是带 NetworkObject 的网络对象，不能 SetParent 到没有 NetworkObject 的 Holdpoint
+        // （NGO 会抛 InvalidParentException 并把父级回滚），位置改由 FollowTransform 驱动
+        newKitchenObject.SetFollowTarget(GetHoldpoint());
         SetKitchenobject(newKitchenObject);
     }
 
@@ -123,8 +125,7 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
 
     public  void creatkitchenobject(GameObject kitchenobjectprefab)
     {
-    //   KitchenGameMultiPlayer kitchenGameMultiPlayer = KitchenGameMultiPlayer.Instance;
-    //   kitchenGameMultiPlayer.CreateKitchenObjectServerRpc(kitchenobjectprefab); 
+
     }
 
     public static void ClearStaticData()

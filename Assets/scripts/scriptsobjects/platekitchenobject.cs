@@ -19,7 +19,7 @@ public class platekitchenobject :KitchenObject
 
     public bool AddKitchenobjectSO(KitchenObjectSO kitchenobjectSO)
     {
-        if (kitchenObjectSOlist.Contains(kitchenobjectSO)) //����Ѿ�����
+        if (kitchenObjectSOlist.Contains(kitchenobjectSO)) 
         {
 
             return false;

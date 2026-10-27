@@ -314,6 +314,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8762170466198883856}
+    - targetCorrespondingSourceObject: {fileID: 1890263396557233170, guid: d3ffb6776ec2a864580d78a6aee6a0eb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3237363850236295470}
   m_SourcePrefab: {fileID: 100100000, guid: d3ffb6776ec2a864580d78a6aee6a0eb, type: 3}
 --- !u!4 &5761442268909010026 stripped
 Transform:
@@ -339,8 +343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4a7c3d031c311b418fd130791e24842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Holdpoint: {fileID: 338443116555135496}
   selectedcounter: {fileID: 7388156577192152841}
+  Holdpoint: {fileID: 338443116555135496}
   plateso: {fileID: 11400000, guid: 8d9459eedb66eec46811dc3fcb244559, type: 2}
   spawnrate: 3
   platecountmax: 5
@@ -358,6 +362,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   counter: {fileID: 1281611078373249796}
   keyPromptVisual: {fileID: 1088424795356618692}
+--- !u!114 &-3237363850236295470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9100851335186779012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1001 &9107400172669576572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -370,6 +390,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlatesCounter_Visual
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589716710238282922, guid: e21b499d164095947b7559f0267f0e63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4589716710238282923, guid: e21b499d164095947b7559f0267f0e63,
         type: 3}

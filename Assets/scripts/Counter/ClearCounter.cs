@@ -15,7 +15,7 @@ public class ClearCounter : BaseCounter
                 {
                     TransferKitchenObject(player, this); //�����ӷ���������
                 }
-                else //��̨���ǿ�
+                else 
                 {
                  bool Success = platekitchenobject.AddKitchenobjectSO(GetKitchenObjectSO());
                  if (Success)

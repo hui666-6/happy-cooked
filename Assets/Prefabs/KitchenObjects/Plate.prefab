@@ -320,6 +320,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 8d9459eedb66eec46811dc3fcb244559,
         type: 2}
+    - target: {fileID: -5627152870290225073, guid: 78ed7c6fb1798f5458443a117e0814cb,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     - target: {fileID: 4414327399340246544, guid: 78ed7c6fb1798f5458443a117e0814cb,
         type: 3}
       propertyPath: m_Name
@@ -375,8 +380,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -5635023372965139408, guid: 78ed7c6fb1798f5458443a117e0814cb, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 501019194366529788, guid: 78ed7c6fb1798f5458443a117e0814cb, type: 3}
     m_AddedGameObjects:
@@ -397,6 +401,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3866574499251777889}
+    - targetCorrespondingSourceObject: {fileID: 4414327399340246544, guid: 78ed7c6fb1798f5458443a117e0814cb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4982974035465241708}
+    - targetCorrespondingSourceObject: {fileID: 4414327399340246544, guid: 78ed7c6fb1798f5458443a117e0814cb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7431761496193470540}
   m_SourcePrefab: {fileID: 100100000, guid: 78ed7c6fb1798f5458443a117e0814cb, type: 3}
 --- !u!1 &4504571380934098441 stripped
 GameObject:
@@ -417,6 +429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kitchenObjectSO: {fileID: 11400000, guid: 8d9459eedb66eec46811dc3fcb244559, type: 2}
+  followTransform: {fileID: 0}
   useblekitchenobject:
   - {fileID: 11400000, guid: 0e98605be794e774b87a8a2bafb33fd1, type: 2}
   - {fileID: 11400000, guid: 5ba991ef154fc7346b6a9bae6c62ce78, type: 2}
@@ -427,6 +440,34 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1f075e5c5973c14fbe9880f2e270305, type: 2}
   PlateCompleteVisual: {fileID: 5697547877855356297}
   KitchenObjectUI: {fileID: 7430254623476726638}
+--- !u!114 &4982974035465241708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4504571380934098441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &7431761496193470540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4504571380934098441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b1d794bcb84137479d5d74327203e90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8174511933619376595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8264131586955913674, guid: 78ed7c6fb1798f5458443a117e0814cb,

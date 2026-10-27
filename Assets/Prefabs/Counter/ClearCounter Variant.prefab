@@ -199,6 +199,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3285359732047850775}
+    - targetCorrespondingSourceObject: {fileID: 1890263396557233170, guid: d3ffb6776ec2a864580d78a6aee6a0eb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8263043332004281492}
   m_SourcePrefab: {fileID: 100100000, guid: d3ffb6776ec2a864580d78a6aee6a0eb, type: 3}
 --- !u!1 &1289610514747223895 stripped
 GameObject:
@@ -218,8 +222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bfd809d6ba8a745899a208c46f8df8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Holdpoint: {fileID: 4542901920103753835}
   selectedcounter: {fileID: 3290357976034663893}
+  Holdpoint: {fileID: 4542901920103753835}
 --- !u!114 &3285359732047850775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +238,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   counter: {fileID: -6837522000533614931}
   keyPromptVisual: {fileID: 8201237278656935124}
+--- !u!114 &8263043332004281492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289610514747223895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!4 &2332271745887803577 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3135606702216899580, guid: d3ffb6776ec2a864580d78a6aee6a0eb,

@@ -827,6 +827,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1185568763407457345}
+    - targetCorrespondingSourceObject: {fileID: 1890263396557233170, guid: d3ffb6776ec2a864580d78a6aee6a0eb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -742789920314478156}
   m_SourcePrefab: {fileID: 100100000, guid: d3ffb6776ec2a864580d78a6aee6a0eb, type: 3}
 --- !u!1 &1826021650471237707 stripped
 GameObject:
@@ -846,8 +850,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad864f62045a394a93d4e52ca13c8fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Holdpoint: {fileID: 3650700337651640455}
   selectedcounter: {fileID: 8515230462953431207}
+  Holdpoint: {fileID: 3650700337651640455}
   fryingrecipelist: {fileID: 11400000, guid: 5e8afef2e437d1b49bf84bbbc74ab768, type: 2}
   burningrecipelist: {fileID: 11400000, guid: b56fc4748638ef744b39f3caeec9eb85, type: 2}
   stoveCouonterVisual: {fileID: 6351308238759243660}
@@ -867,6 +871,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warningui: {fileID: 325791844602040326}
   progressbar: {fileID: 4537350888165939719}
+--- !u!114 &-742789920314478156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826021650471237707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!4 &2949624804548661157 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3135606702216899580, guid: d3ffb6776ec2a864580d78a6aee6a0eb,

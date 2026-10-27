@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class ContainCounter : BaseCounter
@@ -14,12 +15,22 @@ public class ContainCounter : BaseCounter
         if (!player.IsHavekitchenobject()) 
         {
             KitchenObject.CreateKitchenObject(kitchen0bjectSO, player);
-            TransferKitchenObject(this, player);
-            ContainerCounterVisual.playOpen();
+            InteracteLogicServerRPC(); 
 
         }
     }
-    
+    [ServerRpc(RequireOwnership =false)]
+
+    private void InteracteLogicServerRPC()//服务器通知所有客户端播放动画
+    {   
+        InteracteLogicClientRPC ();
+    }
+   [ClientRpc]
+   private void InteracteLogicClientRPC()
+    {
+        
+     ContainerCounterVisual.playOpen();
+    }
           
        
     

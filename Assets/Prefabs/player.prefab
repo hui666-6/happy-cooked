@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
-  m_Animator: {fileID: 6229761018690584917}
+  m_Animator: {fileID: 8182520611084415066}
 --- !u!1001 &425642957973891073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -365,12 +365,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 5745139929618274269}
---- !u!95 &6229761018690584917 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6024899996280613204, guid: 1c5dda3c7cd3cf742afcade5419faeab,
-    type: 3}
-  m_PrefabInstance: {fileID: 425642957973891073}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3660080712721845199
 PrefabInstance:
   m_ObjectHideFlags: 0

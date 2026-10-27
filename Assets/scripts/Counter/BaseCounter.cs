@@ -80,8 +80,9 @@ public class BaseCounter : NetworkBehaviour, IKitchenObjectHolder
             return;
         }
 
-        targetHolder.AddKitchenObject(sourceKitchenObject);
-        sourceHolder.ClearKitchenObject();
+        // 走 KitchenObject 的同步链路：ServerRpc 决定归属 → ClientRpc 在所有端更新
+        // 持有者状态和 FollowTransform 目标，不再各端各改本地状态
+        sourceKitchenObject.SetKitchenobjectParent(targetHolder);
     }
 
     public void AddKitchenObject(KitchenObject newKitchenObject)
@@ -91,7 +92,9 @@ public class BaseCounter : NetworkBehaviour, IKitchenObjectHolder
             return;
         }
 
-        newKitchenObject.transform.SetParent(Holdpoint);
+        // 食材是带 NetworkObject 的网络对象，不能 SetParent 到没有 NetworkObject 的 Holdpoint
+        // （NGO 会抛 InvalidParentException 并把父级回滚），位置改由 FollowTransform 驱动
+        newKitchenObject.SetFollowTarget(Holdpoint);
         SetKitchenobject(newKitchenObject);
     }
 
@@ -135,6 +138,6 @@ public class BaseCounter : NetworkBehaviour, IKitchenObjectHolder
 
     public NetworkObject GetNetWorkObject()
     {
-        return null;
+        return NetworkObject;
     }
 }
