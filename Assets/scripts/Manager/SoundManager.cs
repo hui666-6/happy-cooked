@@ -29,10 +29,10 @@ public class SoundManager : MonoBehaviour
             OrderManager.Instance.OnRecipeFailed += Instance_OnRecipeFailed;
         }
         // 下面这些是静态事件，订阅本身不依赖任何实例，非关卡场景里也不会触发，安全。
-        CuttingCounter.onchop += CuttingCounter_onchop;
+        CuttingCounter.OnChop += CuttingCounter_onchop;
         //KitchenObjectHolder.ondrop += KitchenObjectHolder_ondrop;
         player.OnAnyPickSomething += KitchenObjectHolder_onpickup;
-        TrashCounter.onobjecttransh += TrashCounter_onobjecttransh;
+        TrashCounter.OnObjectTransh += TrashCounter_onobjecttransh;
     }
  
     private void TrashCounter_onobjecttransh(object sender, System.EventArgs e)

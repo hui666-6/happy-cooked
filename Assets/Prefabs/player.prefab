@@ -47,7 +47,6 @@ GameObject:
   - component: {fileID: 5761657411985706099}
   - component: {fileID: 3629200431316993271}
   - component: {fileID: 8182520611084415066}
-  - component: {fileID: -3873278843779082733}
   m_Layer: 6
   m_Name: player
   m_TagString: Untagged
@@ -88,7 +87,7 @@ MonoBehaviour:
   roatespeed: 10
   counterLayerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 72
   Holdpoint: {fileID: 2192353239839087530}
 --- !u!136 &2335656606445364076
 CapsuleCollider:
@@ -215,20 +214,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-3873278843779082733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9108064787196330986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 8182520611084415066}
 --- !u!1001 &425642957973891073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,6 +324,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4629216851084080732}
+    - targetCorrespondingSourceObject: {fileID: 3294758251327466535, guid: 1c5dda3c7cd3cf742afcade5419faeab,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5695803580845111074}
   m_SourcePrefab: {fileID: 100100000, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}
 --- !u!4 &2905214489450710053 stripped
 Transform:
@@ -365,6 +354,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 5745139929618274269}
+--- !u!114 &5695803580845111074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2905214489450710054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 6229761018690584917}
+--- !u!95 &6229761018690584917 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6024899996280613204, guid: 1c5dda3c7cd3cf742afcade5419faeab,
+    type: 3}
+  m_PrefabInstance: {fileID: 425642957973891073}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3660080712721845199
 PrefabInstance:
   m_ObjectHideFlags: 0

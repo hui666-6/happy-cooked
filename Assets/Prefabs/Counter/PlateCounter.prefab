@@ -318,6 +318,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -3237363850236295470}
+    - targetCorrespondingSourceObject: {fileID: 1890263396557233170, guid: d3ffb6776ec2a864580d78a6aee6a0eb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3044333888760139631}
   m_SourcePrefab: {fileID: 100100000, guid: d3ffb6776ec2a864580d78a6aee6a0eb, type: 3}
 --- !u!4 &5761442268909010026 stripped
 Transform:
@@ -345,9 +349,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedcounter: {fileID: 7388156577192152841}
   Holdpoint: {fileID: 338443116555135496}
-  plateso: {fileID: 11400000, guid: 8d9459eedb66eec46811dc3fcb244559, type: 2}
+  plateSO: {fileID: 11400000, guid: 8d9459eedb66eec46811dc3fcb244559, type: 2}
   spawnrate: 3
-  platecountmax: 5
+  platecountmax: 2
 --- !u!114 &8762170466198883856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +382,22 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &3044333888760139631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9100851335186779012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a700402a6cc13974bb76d8b68be5508b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platesCounter: {fileID: 1281611078373249796}
+  HoldPoint: {fileID: 338443116555135496}
+  plateVisualPrefab: {fileID: 3812876574508226176, guid: c0c9afd619b40914a8f625c0535e2284,
+    type: 3}
 --- !u!1001 &9107400172669576572
 PrefabInstance:
   m_ObjectHideFlags: 0

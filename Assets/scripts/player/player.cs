@@ -112,22 +112,6 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
         kitchenObject = null;
     }
 
-    public void Destorykitchenobject()
-    {
-        if (kitchenObject == null)
-        {
-            return;
-        }
-
-        Destroy(kitchenObject.gameObject);
-        ClearKitchenObject();
-    }
-
-    public  void creatkitchenobject(GameObject kitchenobjectprefab)
-    {
-
-    }
-
     public static void ClearStaticData()
     { 
         OnPickUp = null;

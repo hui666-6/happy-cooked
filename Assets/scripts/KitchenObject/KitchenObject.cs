@@ -8,12 +8,17 @@ public class KitchenObject :NetworkBehaviour
 {
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
     public IKitchenObjectHolder kitchenObjectparent; 
+
     public FollowTransform followTransform;
 
 
     protected virtual void Awake()
     {
         followTransform = GetComponent<FollowTransform>();
+    }
+    public void Destorykitchenobject()
+    {
+        Destroy(gameObject);
     }
     public KitchenObjectSO GetKitchenObjectSO()
     {
@@ -84,6 +89,7 @@ public class KitchenObject :NetworkBehaviour
         if( KitchenObjectParent.IsHavekitchenobject())
         {
             Debug.LogError("新父对象已经有一个厨房物体了");
+            return;
         } 
         kitchenObjectparent.SetKitchenobject(this); //替换对象身上的物体
         SetFollowTarget(kitchenObjectparent.GetHoldpoint());
@@ -93,4 +99,14 @@ public class KitchenObject :NetworkBehaviour
     {
       KitchenGameMultiPlayer.Instance.CreateKitchenObject(kitchenObjectSO, kitchenObjectHolder);
     }
+    public static void DestoryKitchenObject(KitchenObject kitchenObject)
+    {
+        KitchenGameMultiPlayer.Instance.DestoryKitchenObject(kitchenObject);
+    }
+ 
+    public void ClearKitchenObjectOnParent()
+    {
+        kitchenObjectparent.ClearKitchenObject();
+    }
 }
+

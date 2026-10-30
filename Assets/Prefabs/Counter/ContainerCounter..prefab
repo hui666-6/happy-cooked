@@ -230,7 +230,6 @@ MonoBehaviour:
   selectedcounter: {fileID: 7760727623837815287}
   Holdpoint: {fileID: 3078776185485848702}
   kitchen0bjectSO: {fileID: 11400000, guid: 0e98605be794e774b87a8a2bafb33fd1, type: 2}
-  ContainerCounterVisual: {fileID: 2484743267055685118}
 --- !u!114 &4098931167346835716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,7 +468,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4589716710238282922, guid: 9a9137fa2b035d34e881701d2c178192,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2484743267055685118}
+      addedObject: {fileID: 1693092066055134565}
   m_SourcePrefab: {fileID: 100100000, guid: 9a9137fa2b035d34e881701d2c178192, type: 3}
 --- !u!1 &7720507561272781210 stripped
 GameObject:
@@ -477,7 +476,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6094834566249106736}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2484743267055685118
+--- !u!114 &1693092066055134565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -489,6 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1028cfd527f6410459ca141c18b0b533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  containCounter: {fileID: 1543489849329441912}
 --- !u!4 &7720507561272781211 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4589716710238282923, guid: 9a9137fa2b035d34e881701d2c178192,

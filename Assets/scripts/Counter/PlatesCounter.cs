@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.EventSystems;
+using System;
+using Unity.VisualScripting;
 public class PlatesCounter : BaseCounter
 {
-    [SerializeField] private KitchenObjectSO plateso;
-    [SerializeField] private float spawnrate=3;
-    [SerializeField] private float platecountmax=2;
-    private float Timer=0;
-    private List<KitchenObject> plateslist=new List<KitchenObject>();
+    [SerializeField] private KitchenObjectSO plateSO;
+    [SerializeField] private float spawnrate=3f;
+    [SerializeField] private int  platecountmax=2;
 
+    private int plateAmount=0;
+    private float timer=0;
+   
+    public event EventHandler OnPlateSpawned;
+    public event EventHandler OnPlateCounterInteract;
 
     private void Update()
     {
@@ -19,64 +25,52 @@ public class PlatesCounter : BaseCounter
         {
             return;
         }
-        if (plateslist.Count < platecountmax)
+        if (plateAmount< platecountmax)
         {
-            Timer += Time.deltaTime;
+            timer += Time.deltaTime;
         }
-        if (Timer>spawnrate)
+        if (timer>spawnrate)
         {
-            Timer = 0;
+            timer = 0;
             SpawnPlateServerRPC();
         }
     }
-    [ServerRpc(RequireOwnership =false)]
+     [ServerRpc(RequireOwnership =false)]
     private void SpawnPlateServerRPC()
     {
         SpawnPlateClientRPC();
-    }
+     }
     [ClientRpc]
-    private void SpawnPlateClientRPC()
-    {
-         SpawnPlate();
-    }
+       private void SpawnPlateClientRPC()
+       {
+         OnPlateSpawned?.Invoke(this,EventArgs.Empty);
+         plateAmount++;   
+       }
      [ServerRpc(RequireOwnership =false)]
 
     private void InteracteLogicServerRPC()
-    {   
-        InteracteLogicClientRPC();
-    }
-   [ClientRpc]
-   private void InteracteLogicClientRPC()
+     {   
+         InteracteLogicClientRPC();
+     }
+    [ClientRpc]
+    private void InteracteLogicClientRPC()
     {
-         plateslist.RemoveAt(plateslist.Count - 1);
+      OnPlateCounterInteract?.Invoke(this,EventArgs.Empty);
+      plateAmount--;
     }
 
     public override void Interact(player player)
     {
         if (player.IsHavekitchenobject()==false)
         {
-            if (plateslist.Count > 0)
+            if (plateAmount > 0)
             {
-                //KitchenObject.CreateKitchenObject()
+                KitchenObject.CreateKitchenObject(plateSO,player);
                 InteracteLogicServerRPC();
             }
         }
        
     
 }
-    public void SpawnPlate()
-    {    
-
-        if (plateslist.Count >= platecountmax) 
-        {
-            Timer = 0;
-            return; 
-        }
-        
-            KitchenObject kitchenObject = GameObject.Instantiate(plateso.prefab, GetHoldpoint()).GetComponent<KitchenObject>();
-            kitchenObject.transform.localPosition = Vector3.zero + Vector3.up * 0.1f * plateslist.Count;
-            plateslist.Add(kitchenObject);
-        
-
-    }
+   
 }

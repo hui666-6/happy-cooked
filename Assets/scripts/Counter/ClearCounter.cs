@@ -20,7 +20,7 @@ public class ClearCounter : BaseCounter
                  bool Success = platekitchenobject.AddKitchenobjectSO(GetKitchenObjectSO());
                  if (Success)
                  {
-                   Destorykitchenobject();
+                   KitchenObject.DestoryKitchenObject(player.GetKitchenObject());
                  }
                 }
 
@@ -37,7 +37,7 @@ public class ClearCounter : BaseCounter
                     {
                         if (platekitchenobject.AddKitchenobjectSO(player.GetKitchenObjectSO())) 
                         {
-                            player.Destorykitchenobject();
+                          KitchenObject.DestoryKitchenObject(player.GetKitchenObject());
                         }
                     }
                 }

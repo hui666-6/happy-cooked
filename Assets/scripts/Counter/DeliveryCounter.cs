@@ -11,8 +11,8 @@ public class DeliveryCounter : BaseCounter
              player.GetKitchenObject().TryGetComponent<platekitchenobject>(out platekitchenobject platekitchenobject))
         {
             OrderManager.Instance.DeliveryRecipe(platekitchenobject);
-            player.Destorykitchenobject();
-        
+            KitchenObject.DestoryKitchenObject(player.GetKitchenObject());
+                
         }
     }
 }

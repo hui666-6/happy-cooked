@@ -72,7 +72,7 @@ public class TutorialGuideUI : MonoBehaviour
     {
         // 订阅一次性动作事件（这些动作发生在某一帧，靠事件捕捉最准确）
        // KitchenObjectHolder.ondrop += OnDrop;
-        CuttingCounter.onchop += OnChop;
+        CuttingCounter.OnChop += OnChop;
         platekitchenobject.OnAnyIngredientAdded += OnIngredientAdded;
         if (OrderManager.Instance != null)
         {
@@ -97,7 +97,7 @@ public class TutorialGuideUI : MonoBehaviour
     {
         if (Instance == this) Instance = null;
         //KitchenObjectHolder.ondrop -= OnDrop;
-        CuttingCounter.onchop -= OnChop;
+        CuttingCounter.OnChop -= OnChop;
         platekitchenobject.OnAnyIngredientAdded -= OnIngredientAdded;
         if (OrderManager.Instance != null)
         {

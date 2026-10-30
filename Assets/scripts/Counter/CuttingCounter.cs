@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using static CuttingRecipListSO;
 
@@ -10,32 +11,24 @@ public class CuttingCounter : BaseCounter
     [SerializeField] private ProgressBarUI progressBarUI;
     [SerializeField] private CuttingCounterVisual CuttingCounterVisual;
                      private int cuttingcount;
-    public static event EventHandler onchop;
+    public static event EventHandler OnChop;
     public override void Interact(player player)
     {
-        if (player.IsHavekitchenobject())
+        if (player.IsHavekitchenobject()) //判断玩家手上是否有食材
         {
-            if (IsHavekitchenobject() == false)
+            if (IsHavekitchenobject() == false)//玩家身上有食材，柜台上没有食材
             {
                 cuttingcount = 0; 
                 TransferKitchenObject(player, this);
             }
-            else
-            {
-
-
-            }
+      
         }
         else
         {
-            if (IsHavekitchenobject() == false)
-            {
-
-            }
+            if (IsHavekitchenobject() == false)  return;
             else
             {
-                TransferKitchenObject(this, player);
-                progressBarUI.hide();
+                TransferKitchenObject(this, player);//柜台上有食材
             }
 
         }
@@ -45,31 +38,49 @@ public class CuttingCounter : BaseCounter
     {
         if (IsHavekitchenobject())
         {
-         
-            if (cuttingRecipList.TryGetCuttinigRecipe(GetKitchenObject().GetKitchenObjectSO(), out CuttingRecipe cuttingRecipe))
-            {
-
-                    cut();
-                    progressBarUI.UpdateProgress((float)cuttingcount / cuttingRecipe.cuttingcountmax);
-                    if (cuttingcount == cuttingRecipe.cuttingcountmax)
-                    {
-
-                        Destorykitchenobject();
-                        creatkitchenobject(cuttingRecipe.output.prefab);
-                    }
-            }
+          InteractOperateServerRpc();
         }
     }
-   private void cut()
+   private void Cut()
    {
-     onchop?.Invoke(this, EventArgs.Empty);
+     OnChop?.Invoke(this, EventArgs.Empty);
      cuttingcount++;
      CuttingCounterVisual.playCut();
    }
 
     public static void clearStaticData()
     { 
-     onchop = null;
+     OnChop = null;
     }
 
+    [ServerRpc(RequireOwnership =false)]
+    public void InteractOperateServerRpc()
+    {
+        if(cuttingRecipList.TryGetCuttinigRecipe(GetKitchenObject().GetKitchenObjectSO(), out CuttingRecipe cuttingRecipe))
+        {
+         InteractOperateClientRpc(GetCuttingRecipeSOIndex(cuttingRecipe));
+        }
+    }
+    [ClientRpc]
+    public void  InteractOperateClientRpc(int cuttingRecipeSOIndex)
+    {           
+         Cut();
+         CuttingRecipe cuttingRecipeSO =GetCuttingRecipeSOFromList(cuttingRecipeSOIndex);
+         progressBarUI.UpdateProgress((float)cuttingcount / cuttingRecipeSO.cuttingcountmax);
+         if(cuttingcount==cuttingRecipeSO.cuttingcountmax)
+         {
+         KitchenObject.CreateKitchenObject(cuttingRecipeSO.output,this);
+         progressBarUI.hide();    
+         }        
+      
+    }
+  
+     public int GetCuttingRecipeSOIndex(CuttingRecipe cuttingRecipe)
+    {
+        return cuttingRecipList.cuttingRecipeList.IndexOf(cuttingRecipe);
+    }
+     public CuttingRecipe GetCuttingRecipeSOFromList(int index)
+    {
+        return cuttingRecipList.cuttingRecipeList [index];
+    }
 }

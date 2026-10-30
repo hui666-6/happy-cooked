@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ContainCounter : BaseCounter
 {
     [SerializeField] private KitchenObjectSO kitchen0bjectSO;
-    [SerializeField]private ContainerCounterVisual ContainerCounterVisual;
+    public event EventHandler OnContainerCounterInteract;
 
     
     public override void Interact(player player)
@@ -29,7 +31,7 @@ public class ContainCounter : BaseCounter
    private void InteracteLogicClientRPC()
     {
         
-     ContainerCounterVisual.playOpen();
+     OnContainerCounterInteract?.Invoke(this,EventArgs.Empty);
     }
           
        

@@ -13,7 +13,5 @@ public interface IKitchenObjectHolder
     Transform GetHoldpoint();
     void AddKitchenObject(KitchenObject kitchenObject);
     void ClearKitchenObject();
-    void Destorykitchenobject();
-    void creatkitchenobject(GameObject kitchenobjectprefab);
     NetworkObject GetNetWorkObject();
 }

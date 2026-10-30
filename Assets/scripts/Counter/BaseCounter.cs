@@ -103,22 +103,6 @@ public class BaseCounter : NetworkBehaviour, IKitchenObjectHolder
         kitchenObject = null;
     }
 
-    public void Destorykitchenobject()
-    {
-        if (kitchenObject == null)
-        {
-            return;
-        }
-
-        Destroy(kitchenObject.gameObject);
-        ClearKitchenObject();
-    }
-
-    public void creatkitchenobject(GameObject kitchenobjectprefab)
-    {
-      //  KitchenGameMultiPlayer.Instance.CreateKitchenObjectServerRpc(kitchenobjectprefab, this);
-    }
-
     public static void ClearStaticData()
     {
         ondrop = null;

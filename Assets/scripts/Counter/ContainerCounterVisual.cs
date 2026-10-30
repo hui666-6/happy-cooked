@@ -1,16 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ContainerCounterVisual : MonoBehaviour
 {
     private Animator anim;
-      void Start()
+    [SerializeField] private ContainCounter containCounter;
+
+    void Awake()
     {
-        anim = GetComponent<Animator>();
+        containCounter.OnContainerCounterInteract+=OnInteract_ContainerCouter;
     }
-    public void playOpen()
+    void Start()
     {
-        anim.SetTrigger("OpenClose");
+        anim =GetComponent<Animator>();
+    }
+   public void  OnInteract_ContainerCouter(object sender, EventArgs e)
+    {
+        anim.SetTrigger("OpenClose");        
+    }
+    void OnDestroy()
+    {
+        containCounter.OnContainerCounterInteract-=OnInteract_ContainerCouter;
     }
 }

@@ -8,11 +8,11 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class CuttingRecipListSO : ScriptableObject
 {
-    public List<CuttingRecipe> list;
+    public List<CuttingRecipe> cuttingRecipeList;
     public KitchenObjectSO Getoutput(KitchenObjectSO input)
     {
 
-        foreach (CuttingRecipe recipe in list)
+        foreach (CuttingRecipe recipe in cuttingRecipeList)
         {
             if (recipe.input == input)
             {
@@ -28,11 +28,9 @@ public class CuttingRecipListSO : ScriptableObject
         public KitchenObjectSO output;
         public int cuttingcountmax;
     }
-
-
     public bool TryGetCuttinigRecipe(KitchenObjectSO input,out CuttingRecipe cuttingRecipe)
     {
-        foreach (CuttingRecipe recipe in list)
+        foreach (CuttingRecipe recipe in cuttingRecipeList)
         {
             if (recipe.input == input)
             {

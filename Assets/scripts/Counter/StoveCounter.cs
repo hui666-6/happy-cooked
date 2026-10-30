@@ -79,8 +79,8 @@ public class StoveCounter : BaseCounter
                 progressbarUI.UpdateProgress(fryingTime / fryingrecipe.fryingTime);
                 if (fryingTime >= fryingrecipe.fryingTime)
                 {
-                    Destorykitchenobject();
-                    creatkitchenobject(fryingrecipe.output.prefab);
+                   
+                    //CreatKitchenObject(fryingrecipe.output.prefab);
                     if (burningrecipelist.TryGetCuttinigRecipe(
                         GetKitchenObject().GetKitchenObjectSO(), out FryingRecipe newfryingRecipe))
                     {
@@ -105,8 +105,8 @@ public class StoveCounter : BaseCounter
 
                 if (fryingTime >= fryingrecipe.fryingTime)
                 {
-                    Destorykitchenobject();
-                    creatkitchenobject(fryingrecipe.output.prefab);
+                  
+                    //CreatKitchenObject(fryingrecipe.output.prefab);
                     turntoidle();
 
                 }
