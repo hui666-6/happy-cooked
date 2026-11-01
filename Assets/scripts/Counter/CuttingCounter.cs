@@ -18,7 +18,6 @@ public class CuttingCounter : BaseCounter
         {
             if (IsHavekitchenobject() == false)//玩家身上有食材，柜台上没有食材
             {
-                cuttingcount = 0; 
                 TransferKitchenObject(player, this);
             }
       
@@ -44,7 +43,6 @@ public class CuttingCounter : BaseCounter
    private void Cut()
    {
      OnChop?.Invoke(this, EventArgs.Empty);
-     cuttingcount++;
      CuttingCounterVisual.playCut();
    }
 
@@ -56,23 +54,28 @@ public class CuttingCounter : BaseCounter
     [ServerRpc(RequireOwnership =false)]
     public void InteractOperateServerRpc()
     {
+        if (!IsHavekitchenobject())
+            return;
         if(cuttingRecipList.TryGetCuttinigRecipe(GetKitchenObject().GetKitchenObjectSO(), out CuttingRecipe cuttingRecipe))
         {
-         InteractOperateClientRpc(GetCuttingRecipeSOIndex(cuttingRecipe));
+            cuttingcount++;
+            float progress = ((float)cuttingcount / cuttingRecipe.cuttingcountmax);
+            InteractOperateClientRpc(GetCuttingRecipeSOIndex(cuttingRecipe),progress);
+            if (cuttingcount >= cuttingRecipe.cuttingcountmax)
+            { 
+            KitchenObject.DestoryKitchenObject(GetKitchenObject());
+            KitchenObject.CreateKitchenObject(cuttingRecipe.output,this);
+            cuttingcount = 0;
+            }
         }
     }
-    [ClientRpc]
-    public void  InteractOperateClientRpc(int cuttingRecipeSOIndex)
+    [ClientRpc]//客户端只处理外部表现不参与计算
+    public void  InteractOperateClientRpc(int cuttingRecipeSOIndex,float progress)
     {           
          Cut();
          CuttingRecipe cuttingRecipeSO =GetCuttingRecipeSOFromList(cuttingRecipeSOIndex);
-         progressBarUI.UpdateProgress((float)cuttingcount / cuttingRecipeSO.cuttingcountmax);
-         if(cuttingcount==cuttingRecipeSO.cuttingcountmax)
-         {
-         KitchenObject.CreateKitchenObject(cuttingRecipeSO.output,this);
-         progressBarUI.hide();    
-         }        
-      
+         progressBarUI.UpdateProgress(progress);
+                  
     }
   
      public int GetCuttingRecipeSOIndex(CuttingRecipe cuttingRecipe)
