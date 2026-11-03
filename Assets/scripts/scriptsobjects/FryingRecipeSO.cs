@@ -6,7 +6,7 @@ using UnityEngine;
 public class FryingRecipeSO :ScriptableObject
 {
     public List<FryingRecipe> list;
-    public bool TryGetCuttinigRecipe(KitchenObjectSO input, out FryingRecipe fryingrecipe)
+    public bool TryGetFryingRecipe(KitchenObjectSO input, out FryingRecipe fryingrecipe)
     {
         foreach (FryingRecipe recipe in list)
         {
@@ -19,7 +19,19 @@ public class FryingRecipeSO :ScriptableObject
         fryingrecipe = null;
         return false;
     }
+      public FryingRecipe GetFryingRecipeFromList(int index)
+    {
+        if(index<0||index>=list.Count)
+        {
+            return null;
+        }
+        return list[index];
+    }
 
+   public int GetFryingRecipeIndex(FryingRecipe fryingRecipe)
+    {
+        return list.IndexOf(fryingRecipe);
+    }
 }
 
 [Serializable] public class FryingRecipe 

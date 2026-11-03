@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class platekitchenobject :KitchenObject
 {
@@ -28,12 +28,23 @@ public class platekitchenobject :KitchenObject
         { 
           return false;
         }
-        PlateCompleteVisual.ShowKitchenObject(kitchenobjectSO);
-        KitchenObjectUI.showkitchenobjectUI(kitchenobjectSO);
-        kitchenObjectSOlist.Add(kitchenobjectSO);
-        OnAnyIngredientAdded?.Invoke(this, new OnIngredientAddedEventArgs { kitchenObjectSO = kitchenobjectSO });
+        AddKitchenobjectSOServerRpc(KitchenGameMultiPlayer.Instance.GetKitchenObjectSOIndex(kitchenobjectSO));
         return true;
 
+    }
+    [ServerRpc(RequireOwnership = false)]
+    public void AddKitchenobjectSOServerRpc(int kitchenObjectSOIndex)
+    {
+       AddKitchenobjectSOClientRpc(kitchenObjectSOIndex);
+    }
+    [ClientRpc]
+    private void AddKitchenobjectSOClientRpc(int kitchenObjectSOIndex)
+    {
+        KitchenObjectSO kitchenObjectSO = KitchenGameMultiPlayer.Instance.GetKitchenObjectSOFromList(kitchenObjectSOIndex);
+        PlateCompleteVisual.ShowKitchenObject(kitchenObjectSO);
+        KitchenObjectUI.showkitchenobjectUI(kitchenObjectSO);
+        kitchenObjectSOlist.Add(kitchenObjectSO);
+        OnAnyIngredientAdded?.Invoke(this, new OnIngredientAddedEventArgs { kitchenObjectSO = kitchenObjectSO });
     }
 
     // 场景重载时清理静态事件，避免残留旧订阅导致的空引用/重复触发。
