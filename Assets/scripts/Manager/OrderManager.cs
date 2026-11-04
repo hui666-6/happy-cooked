@@ -20,7 +20,7 @@ public class OrderManager :NetworkBehaviour
     private int currentScore = 0;
     private void Start()
     {
-        GameManager.Instance.onchangstate += GameManager_onchangstate;
+        GameManager.Instance.onChangState += GameManager_onchangstate;
 
         // 每个关卡的菜单列表不同：优先使用当前关卡（LevelManager）配置的菜单池，
         // 未配置时回退到本组件上序列化的默认菜单，保证没有 LevelManager 的场景也能运行。

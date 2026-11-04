@@ -1,30 +1,35 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance { get; private set; }
     private enum State
-    { 
+    {
         waitingtostart,
         countdowntostart,
         gameplaying,
-        gameover    
+        gameover
     }
-    private State state;
-    private float countdownstarttime = 3;
-    private float gameplayingtimer = 60;
+    private NetworkVariable<State> state = new NetworkVariable<State>(State.waitingtostart);
+    private NetworkVariable<float> countdownstarttime = new NetworkVariable<float>(3f);
+    private NetworkVariable < float> gameplayingtimer = new NetworkVariable<float>(120f);
     private float gameplayingtimerTotal;
+
     [SerializeField] private player player;
-    public event EventHandler onchangstate;
+    public event EventHandler onChangState;
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnPaused;
-    private bool isgamePause=false;
+    public event EventHandler onLocalPlayerReadyChanged;
+
+    private bool isgamePause = false;
     /// <summary>本局是否刷新了当前关卡的历史最高分（结算面板用）。</summary>
     public bool LastRunIsNewRecord { get; private set; }
+    public bool isLocalPlayerReady { get; private set; }
+
+    private Dictionary<ulong, bool> playerReadyDictionary;
 
     private void Awake()
     {
@@ -35,8 +40,9 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
-        gameplayingtimerTotal = gameplayingtimer;
-       
+        gameplayingtimerTotal = gameplayingtimer.Value;
+        playerReadyDictionary = new Dictionary<ulong, bool>();
+
     }
     private void Start()
     {
@@ -44,7 +50,7 @@ public class GameManager : MonoBehaviour
         gameinput.Instance.OnPause += GameInput_OnPause;
     }
 
-    private void OnDestroy()
+    public  override void  OnDestroy()
     {
         if (gameinput.Instance != null)
         {
@@ -52,81 +58,112 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public override void OnNetworkSpawn()
+    {
+        state.OnValueChanged += OnStateChanged;
+    }
+
+    private void OnStateChanged(State previousValue, State newValue)
+    {
+        onChangState?.Invoke(this, EventArgs.Empty);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SetPlayerReadyChangedServerRpc(ServerRpcParams serverRpcParams=default)
+    {
+        playerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
+        foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+
+            if (!playerReadyDictionary.ContainsKey(clientID) || !playerReadyDictionary[clientID])
+            {
+                return;
+            }       
+             TruntoCountDownToStart();
+        }
+    }
+
+
     private void GameInput_OnPause(object sender, EventArgs e)
     {
         ToggleGame();
     }
 
-    void  Update()
+   
+    void Update()
     {
-        switch (state)
-        { 
-            case State.waitingtostart:
-                // 不再按时间自动推进；固定检测物理 E 键（不受 Interact 改键影响）
-                // 暂停时不响应 E，避免暂停界面打开时误跳过教程
-                if (!isgamePause && Input.GetKeyDown(KeyCode.E))
-                {
-                    TruntoCountDownToStart();
-                }
-                break;
+        // 不再按时间自动推进；固定检测物理 E 键（不受 Interact 改键影响）
+        // 暂停时不响应 E，避免暂停界面打开时误跳过教程
+        if (!isgamePause && Input.GetKeyDown(KeyCode.E)&&state.Value==State.waitingtostart)
+        {
+            isLocalPlayerReady = true;
+            onLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
+            SetPlayerReadyChangedServerRpc();
+        }
+
+        if (!IsServer)
+            return;
+        switch (state.Value)
+        {
+                     
             case State.countdowntostart:
-                countdownstarttime -= Time.deltaTime;
-               
-                if (countdownstarttime <= 0)
+                countdownstarttime.Value -= Time.deltaTime;
+
+                if (countdownstarttime.Value <= 0)
                 {
                     TrunTogameplaying();
-                
+
                 }
-                break ;
+                break;
             case State.gameplaying:
                 // 设置面板打开时停止计时，避免面板显示期间倒计时仍在流逝
                 if (!IsSettingsOpen())
                 {
-                   // gameplayingtimer -= Time.deltaTime;
-                    if (gameplayingtimer <= 0)
+                    // gameplayingtimer -= Time.deltaTime;
+                    if (gameplayingtimer .Value<= 0)
                     {
                         TrunTogameover();
                     }
                 }
-                break ;
-            case State.gameover:
-                break ;
-                default:
                 break;
-        
-        
-        
-        
+            case State.gameover:
+                break;
+            default:
+                break;
+
+
+
+
         }
-        
+
     }
 
     private void TrunTowaitingtostart()
-    { 
-      state= State.waitingtostart;
-      DisablePlayer();
-      onchangstate?.Invoke(this, EventArgs.Empty);
+    {
+        state.Value = State.waitingtostart;
+        DisablePlayer();
+        onChangState?.Invoke(this, EventArgs.Empty);
     }
 
     private void TruntoCountDownToStart()
-    { 
-        state=State.countdowntostart;
-        DisablePlayer() ;
-        onchangstate?.Invoke(this, EventArgs.Empty);
+    {
+        state.Value = State.countdowntostart;
+        DisablePlayer();
+        onChangState?.Invoke(this, EventArgs.Empty);
     }
     private void TrunTogameplaying()
-    { 
-      state= State.gameplaying;
-      EnablePlayer();
-      onchangstate?.Invoke(this, EventArgs.Empty);
+    {
+        state.Value = State.gameplaying;
+        EnablePlayer();
+        onChangState?.Invoke(this, EventArgs.Empty);
 
     }
     private void TrunTogameover()
-    { 
-     state =State.gameover;
-     DisablePlayer();
-     RecordScore();
-     onchangstate?.Invoke(this, EventArgs.Empty);
+    {
+        state.Value = State.gameover;
+        DisablePlayer();
+        RecordScore();
+        onChangState?.Invoke(this, EventArgs.Empty);
 
     }
 
@@ -144,28 +181,28 @@ public class GameManager : MonoBehaviour
     {
         return PlayerProgress.GetCurrentLevelHighScore();
     }
-    private  void DisablePlayer()
-    { 
-       // player.enabled = false;
-      
+    private void DisablePlayer()
+    {
+        // player.enabled = false;
+
     }
     private void EnablePlayer()
     {
-      //  player.enabled = true;
-        
+        //  player.enabled = true;
+
     }
     public bool IsCountDownToStart()
-    { 
-      return state==State.countdowntostart;
-  
+    {
+        return state.Value == State.countdowntostart;
+
     }
     public float Getcountdowntimer()
-    { 
-      return countdownstarttime;
+    {
+        return countdownstarttime.Value;
     }
     public bool IsGamePlayingState()
     {
-        return state==State.gameplaying; 
+        return state.Value == State.gameplaying;
     }
     /// <summary>设置面板是否打开（打开期间应暂停计时）。</summary>
     private bool IsSettingsOpen()
@@ -174,12 +211,12 @@ public class GameManager : MonoBehaviour
     }
     public bool IsGameOverState()
     {
-        return state == State.gameover;
+        return state.Value == State.gameover;
     }
     public bool IsGameWaitingToStart()
-    { 
-    
-      return  state==State.waitingtostart;
+    {
+
+        return state.Value == State.waitingtostart;
     }
     public void ToggleGame()
     {
@@ -191,16 +228,16 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Time.timeScale= 1;
+            Time.timeScale = 1;
             OnGameUnPaused?.Invoke(this, EventArgs.Empty);
         }
     }
     public float GetGamePlayingTime()
-    { 
-      return gameplayingtimer;
+    {
+        return gameplayingtimer.Value;
     }
     public float GetGamePlayingTimeNormal()
-    { 
-     return gameplayingtimer/gameplayingtimerTotal;
+    {
+        return gameplayingtimer.Value / gameplayingtimerTotal;
     }
 }

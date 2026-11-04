@@ -1,33 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class ClearCounter : BaseCounter
 {
-    
+
     public override void Interact(player player)
     {
         if (player.IsHavekitchenobject())
         {
-            if (player.GetKitchenObject().TryGetComponent<platekitchenobject>(out platekitchenobject platekitchenobject))//������
+            if (player.GetKitchenObject().TryGetComponent<platekitchenobject>(out platekitchenobject platekitchenobject))
             {
                 if (IsHavekitchenobject() == false)
                 {
-                    TransferKitchenObject(player, this); //�����ӷ���������
+                    TransferKitchenObject(player, this);
                 }
-                else 
+                else
                 {
-                 bool Success = platekitchenobject.AddKitchenobjectSO(GetKitchenObjectSO());
-                 if (Success)
-                 {
-                   KitchenObject.DestoryKitchenObject(player.GetKitchenObject());
-                 }
+                    bool Success = platekitchenobject.AddKitchenobjectSO(GetKitchenObjectSO()); //食材是否可以加入盘子中
+                    if (Success)
+                    {
+                        Debug.Log(GetKitchenObject());
+                        KitchenObject.DestoryKitchenObject(GetKitchenObject());
+
+                    }
                 }
 
             }
-            else 
+            else
             {
-                if (IsHavekitchenobject() == false) //��̨Ϊ��
+                if (IsHavekitchenobject() == false) //玩家手上的不是盘子
                 {
                     TransferKitchenObject(player, this);
                 }
@@ -35,9 +36,9 @@ public class ClearCounter : BaseCounter
                 {
                     if (GetKitchenObject().TryGetComponent<platekitchenobject>(out platekitchenobject))
                     {
-                        if (platekitchenobject.AddKitchenobjectSO(player.GetKitchenObjectSO())) 
+                        if (platekitchenobject.AddKitchenobjectSO(player.GetKitchenObjectSO()))
                         {
-                          KitchenObject.DestoryKitchenObject(player.GetKitchenObject());
+                            KitchenObject.DestoryKitchenObject(player.GetKitchenObject());
                         }
                     }
                 }
@@ -45,12 +46,12 @@ public class ClearCounter : BaseCounter
             }
         }
 
-        else 
+        else
         {
-            
+
             if (IsHavekitchenobject() == false) //��̨Ϊ��
             {
-              
+
             }
             else
             {
@@ -61,6 +62,6 @@ public class ClearCounter : BaseCounter
         }
 
     }
-    
+
 
 }

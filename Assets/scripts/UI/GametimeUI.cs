@@ -16,7 +16,7 @@ public class GametimeUI : MonoBehaviour
         
     private void Start()
     {
-        GameManager.Instance.onchangstate += GameManager_onchangstate;
+        GameManager.Instance.onChangState += GameManager_onchangstate;
         hide();
        
     }

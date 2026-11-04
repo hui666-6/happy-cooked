@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Netcode;
+using UnityEngine;
 
-public class platekitchenobject :KitchenObject
+public class platekitchenobject : KitchenObject
 {
     // 任意餐盘成功加入一个食材时触发（供新手教程等监听）。args 携带被加入的食材类型。
     public static event EventHandler<OnIngredientAddedEventArgs> OnAnyIngredientAdded;
@@ -19,14 +19,14 @@ public class platekitchenobject :KitchenObject
 
     public bool AddKitchenobjectSO(KitchenObjectSO kitchenobjectSO)
     {
-        if (kitchenObjectSOlist.Contains(kitchenobjectSO)) 
+        if (kitchenObjectSOlist.Contains(kitchenobjectSO))
         {
 
             return false;
         }
         if (useblekitchenobject.Contains(kitchenobjectSO) == false)
-        { 
-          return false;
+        {
+            return false;
         }
         AddKitchenobjectSOServerRpc(KitchenGameMultiPlayer.Instance.GetKitchenObjectSOIndex(kitchenobjectSO));
         return true;
@@ -35,7 +35,7 @@ public class platekitchenobject :KitchenObject
     [ServerRpc(RequireOwnership = false)]
     public void AddKitchenobjectSOServerRpc(int kitchenObjectSOIndex)
     {
-       AddKitchenobjectSOClientRpc(kitchenObjectSOIndex);
+        AddKitchenobjectSOClientRpc(kitchenObjectSOIndex);
     }
     [ClientRpc]
     private void AddKitchenobjectSOClientRpc(int kitchenObjectSOIndex)
@@ -54,9 +54,9 @@ public class platekitchenobject :KitchenObject
     }
 
     public List<KitchenObjectSO> GetkitchenObjectList()
-    { 
-    
-     return kitchenObjectSOlist;
+    {
+
+        return kitchenObjectSOlist;
     }
 
 }

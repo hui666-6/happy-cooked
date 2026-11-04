@@ -107,7 +107,7 @@ public class StoveCounter : BaseCounter
             {
                 return;
             }
-            else
+            else//玩家手上没有食材，炉子上有食材  则将食材的父物体设置为玩家
             {
                 // 先让服务器停火再转移，否则服务器继续计时，到点会去销毁玩家手上的食材
                 TurnToIdleServerRpc();

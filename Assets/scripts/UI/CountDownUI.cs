@@ -12,7 +12,7 @@ public class CountDownUI : MonoBehaviour
     private void Start()
     {   
         animator = GetComponent<Animator>(); 
-        GameManager.Instance.onchangstate += GameManager_onchangstate;            
+        GameManager.Instance.onChangState += GameManager_onchangstate;            
     }
     private void Update()
     {

@@ -34,13 +34,13 @@ public class GameOverUI : MonoBehaviour
     void Start()
     {
         hide();
-        GameManager.Instance.onchangstate += GameManager_onchangstate;
+        GameManager.Instance.onChangState += GameManager_onchangstate;
         backButton.onClick.AddListener(onClickBackButton);
         nextButton.onClick.AddListener(onClickNextButton);
     }
      void OnDestroy()
     {
-        GameManager.Instance.onchangstate -= GameManager_onchangstate;
+        GameManager.Instance.onChangState -= GameManager_onchangstate;
         backButton.onClick.RemoveListener(onClickBackButton);
         nextButton.onClick.RemoveListener(onClickNextButton);
     }

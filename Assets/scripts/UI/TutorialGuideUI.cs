@@ -83,7 +83,7 @@ public class TutorialGuideUI : MonoBehaviour
 
         if (startOnGamePlaying && GameManager.Instance != null)
         {
-            GameManager.Instance.onchangstate += OnGameStateChanged;
+            GameManager.Instance.onChangState += OnGameStateChanged;
             // 如果订阅时已经在游戏进行中，直接开始
             if (GameManager.Instance.IsGamePlayingState()) BeginTutorial();
         }
@@ -105,7 +105,7 @@ public class TutorialGuideUI : MonoBehaviour
         }
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.onchangstate -= OnGameStateChanged;
+            GameManager.Instance.onChangState -= OnGameStateChanged;
         }
     }
 
