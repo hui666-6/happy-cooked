@@ -17,7 +17,7 @@ public class CountDownUI : MonoBehaviour
     private void Update()
     {
         
-        if (GameManager.Instance.IsCountDownToStart())
+        if (GameManager.Instance.CheckGameState(GameManager.State.countdowntostart))
         {
             int NowNumber = Mathf.CeilToInt(GameManager.Instance.Getcountdowntimer());
             number.text=NowNumber.ToString();
@@ -33,7 +33,7 @@ public class CountDownUI : MonoBehaviour
 
     private void GameManager_onchangstate(object sender, System.EventArgs e)
     {
-        if (GameManager.Instance.IsCountDownToStart())
+        if (GameManager.Instance.CheckGameState(GameManager.State.countdowntostart))
         {
             number.gameObject.SetActive(true);
         }

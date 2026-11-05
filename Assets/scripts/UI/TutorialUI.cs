@@ -25,7 +25,7 @@ public class TutorialUI : MonoBehaviour
 
     private void gamemanager_onchangstate(object sender, System.EventArgs e)
     {
-        if (GameManager.Instance.IsGameWaitingToStart()&&!GameManager.Instance.isLocalPlayerReady)
+        if (GameManager.Instance.CheckGameState(GameManager.State.waitingtostart) &&!GameManager.Instance.isLocalPlayerReady)
         {
             show();
             UpdateVisual();

@@ -33,7 +33,7 @@ public class OrderManager :NetworkBehaviour
 
     private void GameManager_onchangstate(object sender, EventArgs e)
     {
-        if (GameManager.Instance.IsGamePlayingState())
+        if (GameManager.Instance.CheckGameState(GameManager.State.gameplaying))
         {
             startsqawnorder();
         }

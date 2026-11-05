@@ -13,7 +13,7 @@ public class WaitingReadyUI : MonoBehaviour
 
     private void GameManager_onchangstate(object sender, EventArgs e)
     {
-        if (GameManager.Instance.IsCountDownToStart())
+        if (GameManager.Instance.CheckGameState(GameManager.State.countdowntostart))
         {
             Hide();
         }

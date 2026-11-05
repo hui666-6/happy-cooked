@@ -85,7 +85,7 @@ public class TutorialGuideUI : MonoBehaviour
         {
             GameManager.Instance.onChangState += OnGameStateChanged;
             // 如果订阅时已经在游戏进行中，直接开始
-            if (GameManager.Instance.IsGamePlayingState()) BeginTutorial();
+            if (GameManager.Instance.CheckGameState(GameManager.State.gameplaying)) BeginTutorial();
         }
         else
         {
@@ -184,7 +184,7 @@ public class TutorialGuideUI : MonoBehaviour
 
     private void OnGameStateChanged(object sender, EventArgs e)
     {
-        if (!started && GameManager.Instance.IsGamePlayingState())
+        if (!started && GameManager.Instance.CheckGameState(GameManager.State.gameplaying))
         {
             BeginTutorial();
         }

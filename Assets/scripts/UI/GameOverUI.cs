@@ -46,7 +46,7 @@ public class GameOverUI : MonoBehaviour
     }
     private void GameManager_onchangstate(object sender, System.EventArgs e)
     {
-        if (GameManager.Instance.IsGameOverState())
+        if (GameManager.Instance.CheckGameState(GameManager.State.gameover))
         { 
            currentScore=OrderManager.Instance.GetCurrentScore();
            starImage.fillAmount= Mathf.Clamp01((float)currentScore/threeStar);

@@ -13,8 +13,8 @@ public class PuaseUI : MonoBehaviour
     private void Start()
     {
         hide();
-        GameManager.Instance.OnGameUnPaused += GameManager_OnGameUnPaused;
-        GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
+        GameManager.Instance.onLocalGameUnPaused += GameManager_OnGameUnPaused;
+        GameManager.Instance.onLocalGamePaused += GameManager_OnGamePaused;
         continuebutton.onClick.AddListener(() => 
         {
             GameManager.Instance.ToggleGame();
