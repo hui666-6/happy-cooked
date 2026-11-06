@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,7 @@ public class PuaseUI : MonoBehaviour
         menubutton.onClick.AddListener(() =>
         {
             Loader.load(Loader.scene.GameMenu);
+            NetworkManager.Singleton.Shutdown();
         }
         );
         Settingsbutton.onClick.AddListener(() => 

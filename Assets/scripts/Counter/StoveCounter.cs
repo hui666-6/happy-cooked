@@ -38,6 +38,7 @@ public class StoveCounter : BaseCounter
         fryingTime.OnValueChanged += OnNetWorkFryingTime_Valuechanged;
         burningTime.OnValueChanged += OnNetWorkBurningTime_Valuechanged;
         stoveState.OnValueChanged += OnStoveState_ValueChanged;
+        GameManager.Instance.onChangState += GameManager_onchangestate;
     }
 
     public override void OnNetworkDespawn()
@@ -45,6 +46,11 @@ public class StoveCounter : BaseCounter
         fryingTime.OnValueChanged -= OnNetWorkFryingTime_Valuechanged;
         burningTime.OnValueChanged -= OnNetWorkBurningTime_Valuechanged;
         stoveState.OnValueChanged -= OnStoveState_ValueChanged;
+        // 漏了这条退订：GameManager 的 C# 事件不随 despawn 自动断开，不退订就是泄漏
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onChangState -= GameManager_onchangestate;
+        }
     }
 
     private void OnNetWorkFryingTime_Valuechanged(float perviousVlaue, float newValue)
@@ -71,7 +77,16 @@ public class StoveCounter : BaseCounter
         // 客户端不能写 NetworkVariable，这里只负责刷新表现
         UpdateStateVisual(newStoveState);
     }
-
+    private void GameManager_onchangestate(object sender, System.EventArgs e)
+    {
+        // 结算时把炉子表现层一次性收掉（进度条、特效、音效、警告）。
+        // 炉子状态机在 gameover 后不会自己回 Idle（timeScale=0 冻住了服务器的烧焦流程），
+        // 只停声音的话 WarningUI 的闪烁动画和滴声会在客户端一直循环。
+        if (GameManager.Instance.CheckGameState(GameManager.State.gameover))
+        {
+            UpdateStateVisual(StoveState.Idle);
+        }
+    }
 
     public override void Interact(player player)
     {
@@ -250,7 +265,7 @@ public class StoveCounter : BaseCounter
                 break;
             case StoveState.Bruning:
                 stoveCouonterVisual.ShowStoveEffect();
-                if (!sound.isPlaying) sound.Play();
+                sound.Play();
                 break;
         }
     }

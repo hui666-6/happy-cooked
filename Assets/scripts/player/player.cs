@@ -1,8 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using System.Collections.Generic;
-using Unity.Mathematics;
 
 public class player : NetworkBehaviour, IKitchenObjectHolder
 {
@@ -24,8 +23,8 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
     private KitchenObject kitchenObject;
     private bool iswalking = false;
     private BaseCounter selectedcounter;
-    RaycastHit[] hits = new RaycastHit[8]; 
-   
+    RaycastHit[] hits = new RaycastHit[8];
+
 
     private void Start()
     {
@@ -41,20 +40,39 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
         }
         transform.position = spawnpositionlist[(int)OwnerClientId];
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+
+        if (IsServer) //所有玩家的连接、断开的状态，只在服务端维护
+        { 
+          NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        }
     }
+
+    // 断开连接时销毁玩家手上的食材，避免食材残留在场景中
+    private void NetworkManager_OnClientDisconnectCallback(ulong clientID)
+    {
+        if (clientID == OwnerClientId && GetKitchenObject() != null)
+        { 
+          KitchenObject.DestoryKitchenObject(GetKitchenObject());
+        }
+    }
+
     private void Gameinput_OnOperateAction(object sender, EventArgs e)
     {
+        if (!enabled)
+            return;
         selectedcounter?.InteractOperate(this);
     }
 
     private void Gameinput_OnInteractAction(object sender, EventArgs e)
     {
+        if (!enabled)
+            return;
         selectedcounter?.Interact(this);
     }
 
     private void Update()
     {
-        if(!IsOwner)
+        if (!IsOwner)
         {
             return;
         }
@@ -119,7 +137,7 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
     }
 
     public static void ClearStaticData()
-    { 
+    {
         OnPickUp = null;
         OnAnyPlayerSpawned = null;
         OnAnyPickSomething = null;
@@ -208,4 +226,5 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
     {
         return NetworkObject;
     }
+
 }

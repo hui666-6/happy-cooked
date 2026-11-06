@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WarningUI : MonoBehaviour
@@ -7,12 +5,13 @@ public class WarningUI : MonoBehaviour
     [SerializeField] private GameObject warningui;
     [SerializeField] private Animator progressbar;
     private const string IS_FLICKER = "Flicker";
-    private bool iswarning=false;
+    private bool iswarning = false;
     private float warningrate = 0.2f;
     private float warningtime = 0;
-    
+
     private void Update()
-    {    if (iswarning)
+    {
+        if (iswarning)
         {
             warningtime += Time.deltaTime;
             if (warningtime >= warningrate)
@@ -22,7 +21,7 @@ public class WarningUI : MonoBehaviour
             }
         }
 
-        
+
     }
     public void show()
     {
@@ -35,7 +34,7 @@ public class WarningUI : MonoBehaviour
     }
     public void hide()
     {
-        iswarning=false;
+        iswarning = false;
         warningui.SetActive(false);
         progressbar.SetBool(IS_FLICKER, false);
 
