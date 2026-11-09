@@ -11,7 +11,7 @@ public class GameMenuUI : MonoBehaviour
     {
         startbutton.onClick.AddListener(()=>
         {
-            Loader.load(Loader.scene.LevelChoose);
+            Loader.load(Loader.scene.LobbyScene);
         }
         );
         quitbutton.onClick.AddListener(() => 

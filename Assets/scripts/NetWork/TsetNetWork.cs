@@ -14,7 +14,7 @@ public class TsetNetWork : MonoBehaviour
         HostButton.onClick.AddListener(() =>
         {
             Debug.Log("HostButton clicked");
-            NetworkManager.Singleton.StartHost();
+            KitchenGameMultiPlayer.Instance.StartHost();
             Hide();
         });
 

@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
+
+
+    [SerializeField]private  Transform playerPrefab;
     public static GameManager Instance { get; private set; }
     public enum State
     {
@@ -81,7 +85,20 @@ public class GameManager : NetworkBehaviour
     {
         state.OnValueChanged += OnStateChanged;
         playerGamePaused.OnValueChanged += OnPlayerGamePausedChanged;
-        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += NetworkManager_OnLoadEventComplated;
+        }
+    }
+
+    private void NetworkManager_OnLoadEventComplated(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    {
+        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            Transform playerTransform = Instantiate(playerPrefab);
+            playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId,true);
+        }
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientID)
@@ -94,6 +111,7 @@ public class GameManager : NetworkBehaviour
         state.OnValueChanged -= OnStateChanged;
         playerGamePaused.OnValueChanged -= OnPlayerGamePausedChanged;
         NetworkManager.Singleton.OnClientDisconnectCallback -= NetworkManager_OnClientDisconnectCallback;
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= NetworkManager_OnLoadEventComplated;
     }
 
     private void OnPlayerGamePausedChanged(bool previousValue, bool newValue)

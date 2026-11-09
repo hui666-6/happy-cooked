@@ -1,12 +1,60 @@
+using System;
 using Unity.Netcode;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class KitchenGameMultiPlayer : NetworkBehaviour
 {
     public static KitchenGameMultiPlayer Instance { get; private set; }
     public KitchenObjectListSO kitchenObjectListSO;
+    public const int  playerMaxCount = 4;
+
+    public event EventHandler OnTryingToJoinGame;
+    public event EventHandler OnFailedToJoinGame;
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+
+    public void StartHost()
+    {
+        NetworkManager.Singleton.ConnectionApprovalCallback-=NetworkManager_ConnectionApprovalCallback;
+        NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
+        NetworkManager.Singleton.StartHost();
+    }
+
+    private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+    {
+        if (SceneManager.GetActiveScene().name != Loader.scene.CharacterChooseScene.ToString())
+        {
+            response.Approved = false;
+            response.Reason = "游戏已经开始了";
+            return;
+        }
+        if (NetworkManager.ConnectedClients.Count <playerMaxCount)
+        {
+            response.Approved = true;
+        }
+    } 
+
+    public void StartClient()
+    {
+        OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallBack;
+      NetworkManager.Singleton.StartClient();
+
+    }
+
+    private void NetworkManager_OnClientDisconnectCallBack(ulong obj)
+    {
+      OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
     }
 
     public void CreateKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectHolder kitchenObjectHolder)

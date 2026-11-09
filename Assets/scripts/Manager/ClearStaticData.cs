@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class ClearStaticData : MonoBehaviour
@@ -9,5 +10,13 @@ public class ClearStaticData : MonoBehaviour
         player.ClearStaticData();
         CuttingCounter.clearStaticData();
         platekitchenobject.ClearStaticData();
+        if (KitchenGameMultiPlayer.Instance != null)
+        {
+            Destroy(KitchenGameMultiPlayer.Instance);
+        }
+        if (NetworkManager.Singleton != null)
+        {
+            Destroy(NetworkManager.Singleton);
+        }
     }
 } 

@@ -1,28 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public static class Loader
 
 {
 
     public enum scene
-    { 
-      GameMenu,
-      Loading,
-      GameScene,
-      LevelChoose
+    {
+        GameMenu,
+        Loading,
+        GameScene,
+        LevelChoose,
+        LobbyScene,
+        CharacterChooseScene
     }
     private static scene targetscene;
     private static string targetSceneName;
     public static void load(scene target)
-    { 
+    {
         Time.timeScale = 1;
-       targetscene = target;
-       targetSceneName = null;
-       SceneManager.LoadScene((int)scene.Loading);
-    
+        targetscene = target;
+        targetSceneName = null;
+        SceneManager.LoadScene((int)scene.Loading);
+
     }
     /// <summary>场景加载中界面，用于显示加载进度。</summary>
     public static void LoadScene(string sceneName)
@@ -37,9 +38,9 @@ public static class Loader
         targetSceneName = sceneName;
         SceneManager.LoadScene((int)scene.Loading);
     }
-   /// <summary>
-   /// 当场景加载完毕后，在LoadBack会调用这个方法加载目标场景。
-   /// </summary>
+    /// <summary>
+    /// 当场景加载完毕后，在LoadBack会调用这个方法加载目标场景。
+    /// </summary>
     public static void LoadBack()
     {
         if (!string.IsNullOrEmpty(targetSceneName))
@@ -52,4 +53,20 @@ public static class Loader
 
         SceneManager.LoadScene((int)targetscene);
     }
+
+    public static void LoadNetworkScence(scene targetScence)
+    {
+        if (NetworkManager.Singleton == null)
+        {
+            Debug.Log("1111");
+            return;
+        }
+        if (NetworkManager.Singleton.SceneManager == null)
+        {
+            Debug.Log("2222");
+            return;
+        }
+        NetworkManager.Singleton.SceneManager.LoadScene(targetScence.ToString(), LoadSceneMode.Single);
+    }
 }
+ 
