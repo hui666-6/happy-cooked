@@ -1,47 +1,47 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class OrderListUI : MonoBehaviour
 {
     [SerializeField] private Transform RecipeParent;
     [SerializeField] private RecipeUI RecipeUITemplate;
+    private readonly List<RecipeUI> spawned = new List<RecipeUI>();
+
     private void Start()
     {
+        if (OrderManager.Instance == null) return;
         RecipeUITemplate.gameObject.SetActive(false);
-        OrderManager.Instance.OnRecipeSpawned += Instance_OnRecipeSpawned;
-        OrderManager.Instance.OnRecipeSuccessed += Instance_OnRecipeSuccessed;
+        OrderManager.Instance.OnRecipeSpawned += Refresh;
+        OrderManager.Instance.OnRecipeSuccessed += Refresh;
+        Refresh();
     }
 
-    private void Instance_OnRecipeSuccessed(object sender, System.EventArgs e)
+    private void OnDestroy()
     {
-        updateUI();
+        if (OrderManager.Instance == null) return;
+        OrderManager.Instance.OnRecipeSpawned -= Refresh;
+        OrderManager.Instance.OnRecipeSuccessed -= Refresh;
     }
 
-    private void Instance_OnRecipeSpawned(object sender, System.EventArgs e)
-    {
-        updateUI();
-    }
+    private void Refresh(object sender = null, System.EventArgs e = null) => updateUI();
+
     private void updateUI()
     {
-        foreach (Transform child in RecipeParent)
+        foreach (RecipeUI item in spawned)
         {
-            if (child != RecipeUITemplate.transform)
-            {
-                Destroy(child.gameObject);
-            }
+            if (item == null) continue;
+            item.gameObject.SetActive(false);
+            Destroy(item.gameObject);
         }
-        List<RecipeSO> recipesolist = OrderManager.Instance.GetOrderList();
-        foreach (RecipeSO recipeso in recipesolist)
-        {
-            RecipeUI recipeUI = GameObject.Instantiate(RecipeUITemplate);
-            recipeUI.transform.SetParent(RecipeParent);
-            recipeUI.gameObject.SetActive(true);
-            recipeUI.UpdateRecipeSo(recipeso);
-        }
+        spawned.Clear();
 
+        foreach (RecipeSO so in OrderManager.Instance.GetOrderList())
+        {
+            RecipeUI ui = Instantiate(RecipeUITemplate, RecipeParent, false);
+            ui.gameObject.SetActive(true);
+            ui.UpdateRecipeSo(so);
+            spawned.Add(ui);
+        }
     }
-
-
 }
+

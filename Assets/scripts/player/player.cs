@@ -13,6 +13,7 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
     [SerializeField] private LayerMask collisionLayerMask;
     [SerializeField] private Transform Holdpoint;
     [SerializeField] private List<Vector3> spawnpositionlist;
+    [SerializeField] private PlayerVisualUI playerVisualUI;
 
     public static player LocalInstance { get; private set; }
 
@@ -26,10 +27,11 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
     RaycastHit[] hits = new RaycastHit[8];
 
 
+  
     private void Start()
     {
         gameinput.Instance.OnInteractAction += Gameinput_OnInteractAction;
-        gameinput.Instance.OnOperateAction += Gameinput_OnOperateAction;
+        gameinput.Instance.OnOperateAction += Gameinput_OnOperateAction;   
     }
 
     public override void OnNetworkSpawn()
@@ -38,12 +40,14 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
         {
             LocalInstance = this;
         }
-        transform.position = spawnpositionlist[(int)OwnerClientId];
+        transform.position = spawnpositionlist[KitchenGameMultiPlayer.Instance.GetIndexFromClient(OwnerClientId)];
+        PlayerData playerData = KitchenGameMultiPlayer.Instance.GetPlayerDataFromClient(OwnerClientId);
+        playerVisualUI.SetPlayerColor(KitchenGameMultiPlayer.Instance.GetColor(playerData.colorId));
         OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
 
         if (IsServer) //所有玩家的连接、断开的状态，只在服务端维护
-        { 
-          NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
         }
     }
 
@@ -51,8 +55,8 @@ public class player : NetworkBehaviour, IKitchenObjectHolder
     private void NetworkManager_OnClientDisconnectCallback(ulong clientID)
     {
         if (clientID == OwnerClientId && GetKitchenObject() != null)
-        { 
-          KitchenObject.DestoryKitchenObject(GetKitchenObject());
+        {
+            KitchenObject.DestoryKitchenObject(GetKitchenObject());
         }
     }
 

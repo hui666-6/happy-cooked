@@ -64,7 +64,6 @@ public class OrderManager :NetworkBehaviour
         {
             orderTimer = 0;
             OrderNewRecipe();
-
         }
 
     }

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class TestingCharacterChooseUI : MonoBehaviour
 {
-    [SerializeField] public Button readyButton;
+    [SerializeField] public Button readyButton; 
 
     private void Start()
     {

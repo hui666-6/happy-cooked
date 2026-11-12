@@ -20,7 +20,7 @@ public class GameManager : NetworkBehaviour
     }
     private NetworkVariable<State> state = new NetworkVariable<State>(State.waitingtostart);
     private NetworkVariable<float> countdownstarttime = new NetworkVariable<float>(3f);
-    private NetworkVariable<float> gameplayingtimer = new NetworkVariable<float>(10f);
+    private NetworkVariable<float> gameplayingtimer = new NetworkVariable<float>(120f);
     private NetworkVariable<bool> playerGamePaused = new NetworkVariable<bool>(false);
     private float gameplayingtimerTotal;
 
@@ -97,6 +97,7 @@ public class GameManager : NetworkBehaviour
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
             Transform playerTransform = Instantiate(playerPrefab);
+           
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId,true);
         }
     }

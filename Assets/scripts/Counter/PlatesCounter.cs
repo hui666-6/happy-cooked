@@ -9,8 +9,8 @@ using Unity.VisualScripting;
 public class PlatesCounter : BaseCounter
 {
     [SerializeField] private KitchenObjectSO plateSO;
-    [SerializeField] private float spawnrate=3f;
-    [SerializeField] private int  platecountmax=2;
+    [SerializeField] private float spawnrate=2f;
+    [SerializeField] private int  platecountmax=3;
 
     private int plateAmount=0;
     private float timer=0;
@@ -25,7 +25,7 @@ public class PlatesCounter : BaseCounter
         {
             return;
         }
-        if (plateAmount< platecountmax)
+        if (plateAmount< platecountmax&&GameManager.Instance.CheckGameState(GameManager.State.gameplaying))
         {
             timer += Time.deltaTime;
         }

@@ -4,9 +4,9 @@ using UnityEngine;
 public class HostDisconnect : MonoBehaviour
 {
 
-
     public void Start()
     {
+        if(NetworkManager.Singleton!=null)
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
         Hide();
     }
@@ -16,6 +16,7 @@ public class HostDisconnect : MonoBehaviour
         if (clientID == NetworkManager.ServerClientId)
         {
             Show();
+            Debug.Log("666");
         }
     }
 
@@ -27,5 +28,9 @@ public class HostDisconnect : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-      
+    private void OnDestroy()
+    {
+        if (NetworkManager.Singleton != null)
+            NetworkManager.Singleton.OnClientDisconnectCallback -= NetworkManager_OnClientDisconnectCallback;
+    }
 }
